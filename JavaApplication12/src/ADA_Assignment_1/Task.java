@@ -8,14 +8,31 @@ package ADA_Assignment_1;
 /**
  *
  * @author Callum
+ * @param <E>
+ * @param <F>
  */
-public class Task<E,F> {
+public abstract class Task<E,F> implements Runnable {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public Task(E param) {
     }
     
+    public int getId() {
+        return 0;
+    }
+    
+    @Override
+    public void run() {
+    }
+    
+    public void addListener(TaskObserver<F> o) {
+        
+    }
+    
+    public void removeListener(TaskObserver<F> o) {
+        
+    }
+    
+    protected void notifyAll(F progress) {
+        
+    }
 }
