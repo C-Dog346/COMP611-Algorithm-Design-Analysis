@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication12;
+package ADA_Assignment_1;
 
 /**
  *
  * @author Callum
  */
-public class JavaApplication12 {
+public class Task<E,F> {
 
     /**
      * @param args the command line arguments
