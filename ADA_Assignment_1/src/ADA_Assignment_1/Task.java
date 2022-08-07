@@ -6,6 +6,7 @@
 package ADA_Assignment_1;
 
 import java.util.ArrayList;
+
 /**
  *
  * @author Callum
@@ -14,11 +15,9 @@ import java.util.ArrayList;
  */
 public abstract class Task<E, F> implements Runnable {
     
-    private E data;
-    private ArrayList<TaskObserver> listeners;
+    private final ArrayList<TaskObserver> listeners;
     
     public Task(E param) {
-        data = param;
         listeners = new ArrayList<>();
     }
 
@@ -36,9 +35,9 @@ public abstract class Task<E, F> implements Runnable {
 
     protected void notifyAll(F progress) {
         for (TaskObserver o: listeners) {
-            synchronized(o) {
+            //synchronized(o) {
                 o.notify();
-            }
+            //}
         }
     }
 }
