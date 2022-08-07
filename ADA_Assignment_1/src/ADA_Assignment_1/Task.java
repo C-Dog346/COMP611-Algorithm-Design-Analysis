@@ -35,4 +35,11 @@ public abstract class Task<E,F> implements Runnable {
     protected void notifyAll(F progress) {
         
     }
+    
+    private class UniqueIdentifier {
+        
+        public UniqueIdentifier() {
+            
+        }
+    }
 }
