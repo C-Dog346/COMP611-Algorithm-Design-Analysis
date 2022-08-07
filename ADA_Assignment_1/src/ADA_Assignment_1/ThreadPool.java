@@ -114,6 +114,12 @@ public class ThreadPool {
         
         return true;
     }
+    
+    public void resize(int newSize) throws InterruptedException {
+        destroyPool();
+        threads = new Thread[newSize];
+        createThreads();
+    }
 }
 
 
