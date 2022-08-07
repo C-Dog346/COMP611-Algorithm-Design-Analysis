@@ -15,11 +15,9 @@ import java.util.ArrayList;
  */
 public abstract class Task<E, F> implements Runnable {
     
-    private E data;
-    private ArrayList<TaskObserver> listeners;
+    private final ArrayList<TaskObserver> listeners;
     
     public Task(E param) {
-        data = param;
         listeners = new ArrayList<>();
     }
 
