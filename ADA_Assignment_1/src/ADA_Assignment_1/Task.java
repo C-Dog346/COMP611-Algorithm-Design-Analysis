@@ -5,6 +5,8 @@
  */
 package ADA_Assignment_1;
 
+import javafx.beans.Observable;
+
 /**
  *
  * @author Callum
@@ -20,10 +22,6 @@ public abstract class Task<E,F> implements Runnable {
         return 0;
     }
     
-    @Override
-    public void run() {
-    }
-    
     public void addListener(TaskObserver<F> o) {
         
     }
@@ -37,6 +35,8 @@ public abstract class Task<E,F> implements Runnable {
     }
     
     private class UniqueIdentifier {
+        
+        public final static int COUNTER = 0;
         
         public UniqueIdentifier() {
             
