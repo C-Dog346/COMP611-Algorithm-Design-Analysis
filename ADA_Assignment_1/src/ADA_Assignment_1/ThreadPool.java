@@ -43,7 +43,9 @@ public class ThreadPool {
                         
                         // Threads 'waiting' in the pool for a task
                         try {
-                            this.wait();
+                            synchronized (this) {
+                                this.wait();
+                            }
                         } catch (InterruptedException ex) {
                             Logger.getLogger(ThreadPool.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -120,6 +122,14 @@ public class ThreadPool {
         destroyPool();
         threads = new Thread[newSize];
         createThreads();
+    }
+    
+    public int getTasks() {
+        return taskQueue.size();
+    }
+    
+    protected Thread[] getThreads() {
+        return threads;
     }
 }
 
