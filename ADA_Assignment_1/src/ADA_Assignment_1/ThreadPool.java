@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 public class ThreadPool {
     
     static final int INITIAL_CAPACITY = 10;
-    static final double LOAD_FACTOR = 0.70f;
     private boolean destroyPool = false;
     
     // Data structures for the task queue and threads
@@ -62,7 +61,9 @@ public class ThreadPool {
                     }
                 }                
             }
-            );           
+            );   
+            
+            threads[i].start();
             
         }
     }
