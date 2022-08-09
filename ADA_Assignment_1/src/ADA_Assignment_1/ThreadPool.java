@@ -42,10 +42,12 @@ public class ThreadPool {
                     while (!destroyPool) {
                         
                         // Threads 'waiting' in the pool for a task
-                        try {
-                            this.wait();
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(ThreadPool.class.getName()).log(Level.SEVERE, null, ex);
+                        synchronized(this) {
+                            try {
+                               this.wait();
+                           } catch (InterruptedException ex) {
+                               Logger.getLogger(ThreadPool.class.getName()).log(Level.SEVERE, null, ex);
+                           }
                         }
 
                         // Threads begin performing a task once notify has been
