@@ -63,7 +63,7 @@ public class Tester {
         tasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //pool.perform(new Task());
+                pool.perform(new MockTask(new Object()));
             }
         });
         
