@@ -22,7 +22,9 @@ public abstract class Task<E, F> implements Runnable {
     }
 
     public int getId() {
-        return UniqueIdentifier.getCOUNTER();
+        UniqueIdentifier id = UniqueIdentifier.getInstance();
+        
+        return id.getCounter();
     }
 
     public void addListener(TaskObserver<F> o) {

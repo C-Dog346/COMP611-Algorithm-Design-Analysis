@@ -11,12 +11,23 @@ package ADA_Assignment_1;
  */
 public class UniqueIdentifier {
 
-    private static int COUNTER = 0;
+    private int counter;
+    private static UniqueIdentifier instance = new UniqueIdentifier();
+
+    
+    private UniqueIdentifier() {
+        counter = 0;
+    }
 
     /**
      * @return the COUNTER
      */
-    public static int getCOUNTER() {
-        return ++COUNTER;
+    
+    public static UniqueIdentifier getInstance() {
+        return instance;
+    }
+    
+    public int getCounter() {
+        return ++counter;
     }
 }
