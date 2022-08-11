@@ -38,7 +38,7 @@ public class Tester {
         threadNum = new JLabel("Number of threads: 0");
         threadsButton = new JButton("Make threads");
         tasksButton = new JButton("Add task");    
-        threadinput = new JTextField("Enter number of threads");
+        threadinput = new JTextField("Enter number of threads (max 100)");
         
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(midPanel, BorderLayout.CENTER);
@@ -64,9 +64,11 @@ public class Tester {
                 int num = 0;
                 if (text.matches("[0-9]+")) {
                     num = Integer.parseInt(text);
-                    pool = new ThreadPool(num);
-                    threadsButton.setEnabled(false);
-                    System.out.println(pool.getSize());
+                    if (num <= 100) {
+                        pool = new ThreadPool(num);
+                        threadsButton.setEnabled(false);
+                        System.out.println(pool.getSize());
+                    }
                 }
                 else {
                     
@@ -112,7 +114,7 @@ public class Tester {
 
             @Override
             public void focusLost(FocusEvent e) {
-                threadinput.setText("Enter number of threads");
+                threadinput.setText("Enter number of threads (max 100)");
             }
         });
        
