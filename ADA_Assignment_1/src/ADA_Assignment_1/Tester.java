@@ -3,6 +3,8 @@ package ADA_Assignment_1;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.*;
 
 /**
@@ -102,7 +104,17 @@ public class Tester {
             }
         });
         
-        
+        threadinput.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                threadinput.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                threadinput.setText("Enter number of threads");
+            }
+        });
        
     }
     
