@@ -72,6 +72,8 @@ public class Tester {
                     popup.add(new JLabel("Enter a single positive integer greater than 0 only."), BorderLayout.NORTH);
                     popup.setVisible(true);
                     popup.setAlwaysOnTop(true);
+                    popup.setSize(300,300);
+                    popup.setLocationRelativeTo(null);
                     threadinput.setEditable(true);
                 }
                 
