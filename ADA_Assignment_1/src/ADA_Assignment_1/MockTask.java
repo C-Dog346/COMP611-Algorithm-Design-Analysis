@@ -39,7 +39,7 @@ public class MockTask<E, F> extends Task<E, F>{
     public void run() {
         
         for (int i = 0; i < 1000; i++) {
-            System.out.println("running some task");
+            System.out.println("");
         }
     }
     

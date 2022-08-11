@@ -22,6 +22,7 @@ public class Tester {
     JButton threadsButton;
     JButton tasksButton;
     JLabel threadNum;
+    JTextField threadinput;
     
     public Tester(int numThreads) {
         this.numThreads = numThreads;
@@ -32,41 +33,68 @@ public class Tester {
         midPanel = new Rectangles();
         botPanel = new JPanel();
         taskQ = new JLabel("Tasks in queue: " + (pool == null ? "0" : pool.getTasks()));
-        threadNum = new JLabel("Number of threads: "+this.numThreads);
+        threadNum = new JLabel("Number of threads: 0");
         threadsButton = new JButton("Make threads");
-        tasksButton = new JButton("Add task");        
+        tasksButton = new JButton("Add task");    
+        threadinput = new JTextField("Enter number of threads");
         
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(midPanel, BorderLayout.CENTER);
         frame.add(botPanel, BorderLayout.SOUTH);
+        topPanel.add(threadinput, BorderLayout.NORTH);
         topPanel.add(threadsButton, BorderLayout.NORTH);
         topPanel.add(tasksButton, BorderLayout.NORTH);
         botPanel.add(taskQ);
         botPanel.add(threadNum);
+        midPanel.setSize(600, 600);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(615, 750);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setResizable(false);
+  
+        threadsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                threadinput.setEditable(false);
+                String text = threadinput.getText();
+                int num = 0;
+                if (text.matches("[0-9]+")) {
+                    num = Integer.parseInt(text);
+                    pool = new ThreadPool(num);
+                    threadsButton.setEnabled(false);
+                    System.out.println(pool.getSize());
+                }
+                else {
+                    
+                    JFrame popup = new JFrame();
+                    popup.add(new JLabel("Enter a single positive integer greater than 0 only."), BorderLayout.NORTH);
+                    popup.setVisible(true);
+                    popup.setAlwaysOnTop(true);
+                    threadinput.setEditable(true);
+                }
+                
+                threadNum.setText("Number of threads: " + num);
+            }
+        });
         
-        pool = new ThreadPool(this.numThreads);
         Thread taskDisplayThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    taskQ.setText("Tasks in queue: "+pool.getTasks());
-                    System.out.println(pool.getTasks());
+                    taskQ.setText("Tasks in queue: " + (pool == null ? "0" : pool.getTasks()));
                 }
             }
-            
+
         });
         taskDisplayThread.start();
-        
+
         tasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pool.perform(new MockTask<String, String>("TEST"));
-                taskQ.setText("Tasks in queue: "+pool.getTasks());
+                taskQ.setText("Tasks in queue: " + (pool == null ? "0" : pool.getTasks()));
             }
         });
         
@@ -76,22 +104,36 @@ public class Tester {
     
     public class Rectangles extends JPanel {
         
-        int width = 50;
-        int height = 50;
-        int offset = 0;
         
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             
-            offset = 0;
-            for (int i = 0; i < numThreads; i++) {
-                if (pool.getThreads()[i].getState() == Thread.State.WAITING)
-                    g.setColor(Color.green);
-                else
-                    g.setColor(Color.red);
-                g.fillRect(10+offset, 10, height, width);
+            if (pool != null) {            
                 
-                offset += 100;
+                final int WIDTH = 60;
+                final int HEIGHT = 60;
+                final int iLimit = pool.getSize();
+
+                super.paintComponent(g);
+                int x = 0;
+                int y = 0;
+
+                for (int i = 0; i < iLimit; i++) {
+                    if (pool.getThreads()[i].getState() == Thread.State.WAITING) {
+                        g.setColor(Color.green);
+                    } else {
+                        g.setColor(Color.red);
+                    }
+                    if (x >= 10 ) {
+                        y++;
+                        x = 0;
+                    }
+                    
+                    g.fillRect(0 + x * WIDTH, 0 + y * HEIGHT, WIDTH, HEIGHT);
+                    g.setColor(Color.black);
+                    g.drawRect(0 + x * WIDTH, 0 + y * HEIGHT, WIDTH, HEIGHT);
+                    x++;
+                }                    
             }
         }
     }
