@@ -43,8 +43,9 @@ public class ThreadPool {
                         
                         // Threads 'waiting' in the pool for a task
                         try {
-                            synchronized (this) {
-                                this.wait();
+                            synchronized (taskQueue) {
+                                if (taskQueue.isEmpty())
+                                    taskQueue.wait();
                             }
                         } catch (InterruptedException ex) {
                             Logger.getLogger(ThreadPool.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,13 +54,16 @@ public class ThreadPool {
                         // Threads begin performing a task once notify has been
                         // called on them by perform()
                         boolean hasTask = false;
-                        Task task;
-                        synchronized(taskQueue) {                        
-                            task = taskQueue.poll();
-                            hasTask = true;
+                        Task task = null;
+                        synchronized(taskQueue) {
+                            if (!taskQueue.isEmpty()) {
+                                task = taskQueue.poll();
+                                hasTask = true;
+                            }
                         }
-                        if (hasTask)
-                            task.run();
+                        if (hasTask) {
+                            task.run();                            
+                        }
                     }
                 }                
             }
@@ -72,6 +76,7 @@ public class ThreadPool {
         
     public int getSize() {
         int count = 0;
+        //synchronized (threads)
         for (Thread t : threads) {
             count++;
         }           
@@ -98,24 +103,21 @@ public class ThreadPool {
         // pool destruction
         synchronized (taskQueue) {
             destroyPool = true;
-            for (int i = 0; i < threads.length; i++) {
-                if (threads[i].getState() == Thread.State.WAITING) {
-                    threads[i].notify();
-                }
-            }
+            taskQueue.notifyAll();
         }
     }
     
     public boolean perform(Task task) {
-        taskQueue.add(task);
-        for (int i = 0; i < threads.length; i++) {
-            if (threads[i].getState() == Thread.State.WAITING) {
-                threads[i].notify();
-                break;
+        boolean success = false;
+        synchronized(taskQueue) {
+            if (!destroyPool) {
+                taskQueue.add(task); 
+                taskQueue.notifyAll();
+                success =  true;
             }
         }
-        
-        return true;
+     
+        return success;
     }
     
     public void resize(int newSize) throws InterruptedException {

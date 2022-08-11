@@ -24,14 +24,15 @@ public class Tester {
     JLabel threadNum;
     
     public Tester(int numThreads) {
+        this.numThreads = numThreads;
         frame = new JFrame("Testing app");
         frame.setLayout(new BorderLayout());
         
         topPanel = new JPanel();
         midPanel = new Rectangles();
         botPanel = new JPanel();
-        taskQ = new JLabel("Tasks in queue: ");
-        threadNum = new JLabel("Number of threads: "+numThreads);
+        taskQ = new JLabel("Tasks in queue: " + (pool == null ? "0" : pool.getTasks()));
+        threadNum = new JLabel("Number of threads: "+this.numThreads);
         threadsButton = new JButton("Make threads");
         tasksButton = new JButton("Add task");        
         
@@ -48,12 +49,13 @@ public class Tester {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
-        pool = new ThreadPool(numThreads);
+        pool = new ThreadPool(this.numThreads);
         Thread taskDisplayThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     taskQ.setText("Tasks in queue: "+pool.getTasks());
+                    System.out.println(pool.getTasks());
                 }
             }
             
@@ -63,7 +65,8 @@ public class Tester {
         tasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pool.perform(new MockTask(new Object()));
+                pool.perform(new MockTask<String, String>("TEST"));
+                taskQ.setText("Tasks in queue: "+pool.getTasks());
             }
         });
         
@@ -80,8 +83,8 @@ public class Tester {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             
-            
-            for (int i = 0; i < pool.getSize(); i++) {
+            offset = 0;
+            for (int i = 0; i < numThreads; i++) {
                 if (pool.getThreads()[i].getState() == Thread.State.WAITING)
                     g.setColor(Color.green);
                 else
@@ -93,10 +96,15 @@ public class Tester {
         }
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         
         final int NumberOfThreads = 5;
         Tester t = new Tester(NumberOfThreads);
+        
+        while (true) {
+            t.frame.repaint();
+            Thread.sleep(10);
+        }
         
     }
 

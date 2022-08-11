@@ -35,9 +35,9 @@ public abstract class Task<E, F> implements Runnable {
 
     protected void notifyAll(F progress) {
         for (TaskObserver o: listeners) {
-            //synchronized(o) {
+            synchronized(o) {
                 o.notify();
-            //}
+            }
         }
     }
 }

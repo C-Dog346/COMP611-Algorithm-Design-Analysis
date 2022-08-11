@@ -11,6 +11,7 @@ public class MockTask<E, F> extends Task<E, F>{
     private final ArrayList<TaskObserver> listeners;
 
     public MockTask(E param) {
+        super(param);
         listeners = new ArrayList<>();
     }
 
