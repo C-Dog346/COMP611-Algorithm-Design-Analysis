@@ -95,8 +95,10 @@ public class Tester {
         tasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pool.perform(new MockTask<String, String>("TEST"));
-                taskQ.setText("Tasks in queue: " + (pool == null ? "0" : pool.getTasks()));
+                if (pool != null) {                    
+                    pool.perform(new MockTask<String, String>("TEST"));
+                    taskQ.setText("Tasks in queue: " + pool.getTasks());
+                }
             }
         });
         
