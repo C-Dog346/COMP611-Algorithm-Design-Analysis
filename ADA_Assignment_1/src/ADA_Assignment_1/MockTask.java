@@ -1,6 +1,8 @@
 package ADA_Assignment_1;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,11 +38,12 @@ public class MockTask<E, F> extends Task<E, F> {
     }
 
     @Override
-    public void run() {
-
-        for (int i = 0; i < 1000; i++) {
-            System.out.println("dot");
+    public void run() {        
+        System.out.println("Running task -> sleeping");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MockTask.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
+    }        
 }
