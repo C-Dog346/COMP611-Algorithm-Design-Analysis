@@ -16,7 +16,7 @@ import java.util.Scanner;
  *
  * @author callumclow
  */
-public class Client implements TaskObserver {
+public class Client {
 
     public static final String HOST_NAME = "127.0.0.1";
     public static final int HOST_PORT = 7777; // host port number
@@ -114,10 +114,6 @@ public class Client implements TaskObserver {
 
     }
 
-    @Override
-    public void update(Task o, Object arg) {
-        System.out.println("Notified");
-    }
 
     public static void main(String[] args) {
         Client client = new Client();
