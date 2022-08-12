@@ -115,7 +115,7 @@ public class ThreadPool {
     public void destroyPool() throws InterruptedException {
 
         // Main thread will spin until all tasks have been completed
-        //while (!taskQueue.isEmpty()) {;}
+        while (!taskQueue.isEmpty()) {Thread.sleep(500);}
         // Synchronize on the queue to make sure no tasks get added during
         // pool destruction
         destroyPool = true;

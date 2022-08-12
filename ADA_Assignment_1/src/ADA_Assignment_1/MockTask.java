@@ -45,7 +45,7 @@ public class MockTask<E, F> extends Task<E, F> {
     public void run() {
         System.out.println("Running task -> sleeping");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         }
         catch (InterruptedException ex) {
             Logger.getLogger(MockTask.class.getName()).log(Level.SEVERE, null, ex);
