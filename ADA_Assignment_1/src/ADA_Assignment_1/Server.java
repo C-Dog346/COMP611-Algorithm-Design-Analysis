@@ -93,13 +93,6 @@ public class Server {
                         }
 
                         pool.perform(message);
-
-                        // remove the listeners and break the code :)
-//                        for (ChatConnection c : connections) {
-//                            if (!c.socket.isClosed()) {
-//                                message.removeListener(c);
-//                            }
-//                        }
                     }
                 }
                 while (!"QUIT".equals(clientMessage));
