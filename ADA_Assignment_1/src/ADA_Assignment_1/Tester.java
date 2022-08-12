@@ -29,6 +29,7 @@ public class Tester {
     public Tester(int numThreads) {
         this.numThreads = numThreads;
         frame = new JFrame("Testing app");
+        
         frame.setLayout(new BorderLayout());
         
         topPanel = new JPanel();
@@ -95,29 +96,6 @@ public class Tester {
 
         });
         taskDisplayThread.start();
-
-        tasksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (pool != null) {                    
-                    pool.perform(new MockTask<String, String>("TEST"));
-                    taskQ.setText("Tasks in queue: " + pool.getTasks());
-                }
-            }
-        });
-        
-        threadinput.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                threadinput.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                threadinput.setText("Enter number of threads (max 100)");
-            }
-        });
-       
     }
     
     public class Rectangles extends JPanel {
