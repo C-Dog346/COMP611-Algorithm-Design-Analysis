@@ -49,25 +49,33 @@ public class Tester {
         botPanel.add(taskQ);
         botPanel.add(threadNum);
         midPanel.setSize(600, 600);
+        threadinput.setSize(100, 50);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(615, 750);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
+        
+        threadsButton.requestFocusInWindow();
+        threadsButton.requestFocus();
   
         threadsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 threadinput.setEditable(false);
-                String text = threadinput.getText();
+                String text = threadinput.getText().trim();
                 int num = 0;
                 if (text.matches("[0-9]+")) {
                     num = Integer.parseInt(text);
-                    if (num <= 100) {
+                    if (num <= 100 && num > 0) {
                         pool = new ThreadPool(num);
                         threadsButton.setEnabled(false);
                         System.out.println(pool.getSize());
+                    }
+                    else {
+                        threadinput.setText("Max 100, Min 1!");
+                        threadinput.setEditable(true);
                     }
                 }
                 else {
@@ -104,19 +112,7 @@ public class Tester {
                     taskQ.setText("Tasks in queue: " + pool.getTasks());
                 }
             }
-        });
-        
-        threadinput.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                threadinput.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                threadinput.setText("Enter number of threads (max 100)");
-            }
-        });
+        });              
        
     }
     
