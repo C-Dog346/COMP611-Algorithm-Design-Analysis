@@ -12,11 +12,12 @@ import java.util.UUID;
  * @author Callum
  */
 public class UniqueIdentifier {
+
     private static UniqueIdentifier instance = new UniqueIdentifier();
-    
+
     private UniqueIdentifier() {
     }
-    
+
     public static UniqueIdentifier getInstance() {
         return instance;
     }

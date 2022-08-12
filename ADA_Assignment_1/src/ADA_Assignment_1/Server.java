@@ -91,10 +91,10 @@ public class Server {
                                 message.addListener(c);
                             }
                         }
-                        
+
                         pool.perform(message);
-                        
-                       // remove the listeners and break the code :)
+
+                        // remove the listeners and break the code :)
 //                        for (ChatConnection c : connections) {
 //                            if (!c.socket.isClosed()) {
 //                                message.removeListener(c);
@@ -124,7 +124,7 @@ public class Server {
                 System.err.println("Server error 3: " + e);
             }
         }
-        
+
         @Override
         public void update(Task o, Object arg) {
             //System.out.println("Notified");

@@ -3,8 +3,6 @@ package ADA_Assignment_1;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -46,18 +44,17 @@ public class Tester {
         threadinput = new JTextField("Enter number of threads (max 100)");
         resize = new JButton("Resize Pool");
         destroy = new JButton("Destroy Pool");
-        
+
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(midPanel, BorderLayout.CENTER);
         frame.add(botPanel, BorderLayout.SOUTH);
-        
+
         topPanel.add(threadinput, BorderLayout.NORTH);
         topPanel.add(threadsButton, BorderLayout.NORTH);
         botPanel.add(tasksButton, BorderLayout.NORTH);
         topPanel.add(destroy);
         topPanel.add(resize);
-        
-        
+
         botPanel.add(taskQ);
         botPanel.add(threadNum);
         midPanel.setSize(600, 600);
@@ -69,13 +66,13 @@ public class Tester {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
-        
+
         threadsButton.requestFocusInWindow();
         threadsButton.requestFocus();
         destroy.setEnabled(false);
         resize.setEnabled(false);
         tasksButton.setEnabled(false);
-  
+
         threadsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,11 +81,13 @@ public class Tester {
                 if (text.matches("[0-9]+")) {
                     num = Integer.parseInt(text);
                     if (num <= 100 && num > 0) {
-                        if (pool == null)
+                        if (pool == null) {
                             pool = new ThreadPool(num);
-                        else
+                        }
+                        else {
                             pool.setThreadArraySize(num);
-                        threadsButton.setEnabled(false);                        
+                        }
+                        threadsButton.setEnabled(false);
                         destroy.setEnabled(true);
                         resize.setEnabled(true);
                         tasksButton.setEnabled(true);
@@ -122,20 +121,20 @@ public class Tester {
             }
 
         });
-        
+
         taskDisplayThread.start();
 
         tasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (pool != null) {                    
+                if (pool != null) {
                     pool.perform(new MockTask<String, String>("TEST"));
                     taskQ.setText("Tasks in queue: " + pool.getTasks());
                 }
             }
         });
-        
-        destroy.addActionListener(new ActionListener(){
+
+        destroy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tasksButton.setEnabled(false);
@@ -145,13 +144,14 @@ public class Tester {
                 threadsButton.setEnabled(true);
                 try {
                     pool.destroyPool();
-                } catch (InterruptedException ex) {
+                }
+                catch (InterruptedException ex) {
                     Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 threadNum.setText("Number of threads: " + (pool == null ? "0" : pool.getSize()));
             }
         });
-        
+
         resize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -160,7 +160,7 @@ public class Tester {
                 destroy.setEnabled(false);
                 threadinput.setEditable(true);
                 threadsButton.setEnabled(false);
-                
+
                 String text = threadinput.getText().trim();
                 int num = 0;
                 if (text.matches("[0-9]+")) {
@@ -168,17 +168,20 @@ public class Tester {
                     if (num <= 100 && num > 0) {
                         try {
                             pool.resize(num);
-                        } catch (InterruptedException ex) {
+                        }
+                        catch (InterruptedException ex) {
                             Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         destroy.setEnabled(true);
                         resize.setEnabled(true);
                         tasksButton.setEnabled(true);
-                    } else {
+                    }
+                    else {
                         threadinput.setText("Max 100, Min 1!");
                         threadinput.setEditable(true);
                     }
-                } else {
+                }
+                else {
 
                     JFrame popup = new JFrame();
                     popup.add(new JLabel("Enter a single positive integer greater than 0 only."), BorderLayout.NORTH);
@@ -191,7 +194,7 @@ public class Tester {
 
                 threadNum.setText("Number of threads: " + (pool == null ? "0" : pool.getSize()));
             }
-        });   
+        });
     }
 
     public class Rectangles extends JPanel {
@@ -212,15 +215,15 @@ public class Tester {
                 for (int i = 0; i < iLimit; i++) {
                     if (pool.getThreads()[i] != null && pool.getThreads()[i].getState() == Thread.State.WAITING) {
                         g.setColor(Color.green);
-                    } 
+                    }
                     else if (pool.getThreads()[i] != null) {
                         g.setColor(Color.red);
                     }
-                    else if (pool.getThreads()[i] == null){
+                    else if (pool.getThreads()[i] == null) {
                         g.setColor(this.getBackground());
                     }
-                        
-                    if (x >= 10 ) {
+
+                    if (x >= 10) {
                         y++;
                         x = 0;
                     }

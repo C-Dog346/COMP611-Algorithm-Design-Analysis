@@ -24,7 +24,7 @@ public abstract class Task<E, F> implements Runnable {
         this.param = param;
         id = UniqueIdentifier.getId();
     }
-    
+
     public String getId() {
         return id;
     }

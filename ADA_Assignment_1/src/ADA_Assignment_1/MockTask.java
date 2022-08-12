@@ -42,12 +42,13 @@ public class MockTask<E, F> extends Task<E, F> {
     }
 
     @Override
-    public void run() {        
+    public void run() {
         System.out.println("Running task -> sleeping");
         try {
             Thread.sleep(5000);
-        } catch (InterruptedException ex) {
+        }
+        catch (InterruptedException ex) {
             Logger.getLogger(MockTask.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }        
+    }
 }
