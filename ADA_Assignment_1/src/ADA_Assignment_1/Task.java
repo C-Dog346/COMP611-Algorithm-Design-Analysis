@@ -14,11 +14,13 @@ import java.util.ArrayList;
  * @param <F>
  */
 public abstract class Task<E, F> implements Runnable {
-    
+
     private final ArrayList<TaskObserver> listeners;
-    
+    private Object param;
+
     public Task(E param) {
         listeners = new ArrayList<>();
+        this.param = param;
     }
 
     public int getId() {
@@ -34,9 +36,9 @@ public abstract class Task<E, F> implements Runnable {
     }
 
     protected void notifyAll(F progress) {
-        for (TaskObserver o: listeners) {
-            synchronized(o) {
-                o.notify();
+        for (TaskObserver o : listeners) {
+            synchronized (o) {
+                o.update(this, param);
             }
         }
     }

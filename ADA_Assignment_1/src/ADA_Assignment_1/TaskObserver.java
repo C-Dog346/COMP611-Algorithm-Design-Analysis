@@ -10,7 +10,7 @@ package ADA_Assignment_1;
  * @author Callum
  */
 public interface TaskObserver<F> {
-    
+
     public void update(Task o, Object arg);
-    
+
 }

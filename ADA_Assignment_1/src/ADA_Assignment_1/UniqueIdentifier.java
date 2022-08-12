@@ -16,7 +16,7 @@ public class UniqueIdentifier {
     /**
      * @return the COUNTER
      */
-    public static int getCOUNTER() {
+    public static synchronized int getCOUNTER() {
         return ++COUNTER;
     }
 }

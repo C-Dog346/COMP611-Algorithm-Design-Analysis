@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author coola
  */
-public class MockTask<E, F> extends Task<E, F>{
+public class MockTask<E, F> extends Task<E, F> {
 
     private final ArrayList<TaskObserver> listeners;
 
@@ -29,19 +29,18 @@ public class MockTask<E, F> extends Task<E, F>{
 
     protected void notifyAll(F progress) {
         for (TaskObserver o : listeners) {
-            synchronized(o) {
+            synchronized (o) {
                 o.notify();
             }
         }
     }
-    
+
     @Override
     public void run() {
-        
+
         for (int i = 0; i < 1000; i++) {
             System.out.println("dot");
         }
     }
-    
-    
+
 }
