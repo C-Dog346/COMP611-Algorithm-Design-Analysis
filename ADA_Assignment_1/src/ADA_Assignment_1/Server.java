@@ -23,10 +23,12 @@ public class Server {
     private ArrayList<ChatConnection> connections;
     private boolean requested;
     public static final int PORT = 7777; // some unused port number
+    public ThreadPool pool;
 
     public Server() {
         connections = new ArrayList<>();
         requested = false;
+        pool = new ThreadPool(5);
     }
 
     public void startServer() {
@@ -41,7 +43,7 @@ public class Server {
             System.exit(-1);
         }
         try {
-            while (!requested) {
+            while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection made with "
                         + socket.getInetAddress());
@@ -81,16 +83,14 @@ public class Server {
                 do {
                     clientMessage = br.readLine();
                     String response;
-                    if ("".equals(clientMessage)) {
-                        response = "Nothing entered, try again";
-                    }
-                    else if ("QUIT".equals(clientMessage)) {
+                    if ("QUIT".equals(clientMessage)) {
                         response = "Quitting!";
-                        pw.println(response);
+                        //pw.println(response);
                     }
                     else {
-                        response = "Message recieved.";
-                        server.broadcastMessage(clientMessage);
+                        //server.broadcastMessage(clientMessage);
+                        MessageSender message = new MessageSender(clientMessage);
+                        message.notifyAll();
                     }
                 }
                 while (!"QUIT".equals(clientMessage));
