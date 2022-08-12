@@ -20,9 +20,8 @@ public class MessageSender extends Task {
 
     @Override
     public void run() {
-        // synchronized (this) {
+
         this.notifyAll(null);
-        //  }
 
         System.out.println("Start of message " + this.getId());
 
