@@ -14,24 +14,24 @@ public class ThreadPool {
     private boolean destroyPool = false;
     
     // Data structures for the task queue and threads
-    private LinkedList<Task> taskQueue;
+    private LinkedList<Task> taskQueue = taskQueue = new LinkedList();;
     private Thread[] threads;
     
     // Create a new ThreadPool with a default size of INITIAL_CAPACITY;
     public ThreadPool() {
-        taskQueue = new LinkedList();
         threads = new Thread[INITIAL_CAPACITY];
         createThreads();
     }
     
     // Create a new ThreadPool with a customizable default size;
-    public ThreadPool(int initialCapacity) {
-        taskQueue = new LinkedList();
+    public ThreadPool(int initialCapacity) {        
         threads = new Thread[initialCapacity];
         createThreads();
     }
     
     public void createThreads() {
+        destroyPool = false;
+        System.out.println(taskQueue.size());
         for (int i = 0; i < threads.length; i++) {
             
             threads[i] = new Thread(new Runnable() {                
@@ -39,7 +39,7 @@ public class ThreadPool {
                 @Override
                 public void run() {
                     
-                    while (!destroyPool) {
+                    do {
                         
                         // Threads 'waiting' in the pool for a task
                         try {
@@ -55,22 +55,34 @@ public class ThreadPool {
                         // called on them by perform()
                         boolean hasTask = false;
                         Task task = null;
-                        synchronized(taskQueue) {
-                            if (!taskQueue.isEmpty()) {
+                        
+                        if (!taskQueue.isEmpty()) {
+                            synchronized(taskQueue) {                            
                                 task = taskQueue.poll();
                                 hasTask = true;
                             }
                         }
+                        
                         if (hasTask) {
                             task.run();                            
                         }
-                    }
+                        
+//                        if (destroyPool && taskQueue.isEmpty())
+//                            break;
+                            
+                    } while (!destroyPool);
+                    System.out.println("THREAD IS KILL");
+                    System.out.println(taskQueue.size());
                 }                
             }
             );   
             
             threads[i].start();
             
+        }
+        synchronized(taskQueue) {
+            if (!taskQueue.isEmpty())
+                taskQueue.notifyAll();
         }
     }
         
@@ -97,13 +109,17 @@ public class ThreadPool {
     public void destroyPool() throws InterruptedException {
         
         // Main thread will spin until all tasks have been completed
-        while (!taskQueue.isEmpty()) {;}
+        //while (!taskQueue.isEmpty()) {;}
         
         // Synchronize on the queue to make sure no tasks get added during
         // pool destruction
-        synchronized (taskQueue) {
-            destroyPool = true;
+        destroyPool = true;
+        synchronized (taskQueue) {            
             taskQueue.notifyAll();
+        }
+        
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = null;
         }
     }
     
@@ -122,6 +138,10 @@ public class ThreadPool {
     
     public void resize(int newSize) throws InterruptedException {
         destroyPool();
+        setThreadArraySize(newSize);        
+    }
+    
+   public void setThreadArraySize(int newSize) {
         threads = new Thread[newSize];
         createThreads();
     }

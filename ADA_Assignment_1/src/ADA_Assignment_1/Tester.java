@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -25,6 +27,8 @@ public class Tester {
     JButton tasksButton;
     JLabel threadNum;
     JTextField threadinput;
+    JButton resize;
+    JButton destroy;
     
     public Tester(int numThreads) {
         this.numThreads = numThreads;
@@ -39,17 +43,26 @@ public class Tester {
         threadsButton = new JButton("Make threads");
         tasksButton = new JButton("Add task");    
         threadinput = new JTextField("Enter number of threads (max 100)");
+        resize = new JButton("Resize Pool");
+        destroy = new JButton("Destroy Pool");
+        
         
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(midPanel, BorderLayout.CENTER);
         frame.add(botPanel, BorderLayout.SOUTH);
+        
         topPanel.add(threadinput, BorderLayout.NORTH);
         topPanel.add(threadsButton, BorderLayout.NORTH);
-        topPanel.add(tasksButton, BorderLayout.NORTH);
+        botPanel.add(tasksButton, BorderLayout.NORTH);
+        topPanel.add(destroy);
+        topPanel.add(resize);
+        
+        
         botPanel.add(taskQ);
         botPanel.add(threadNum);
         midPanel.setSize(600, 600);
         threadinput.setSize(100, 50);
+        threadinput.setPreferredSize(new Dimension(200, 25));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(615, 750);
@@ -59,19 +72,26 @@ public class Tester {
         
         threadsButton.requestFocusInWindow();
         threadsButton.requestFocus();
+        destroy.setEnabled(false);
+        resize.setEnabled(false);
+        tasksButton.setEnabled(false);
   
         threadsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                threadinput.setEditable(false);
                 String text = threadinput.getText().trim();
                 int num = 0;
                 if (text.matches("[0-9]+")) {
                     num = Integer.parseInt(text);
                     if (num <= 100 && num > 0) {
-                        pool = new ThreadPool(num);
-                        threadsButton.setEnabled(false);
-                        System.out.println(pool.getSize());
+                        if (pool == null)
+                            pool = new ThreadPool(num);
+                        else
+                            pool.setThreadArraySize(num);
+                        threadsButton.setEnabled(false);                        
+                        destroy.setEnabled(true);
+                        resize.setEnabled(true);
+                        tasksButton.setEnabled(true);
                     }
                     else {
                         threadinput.setText("Max 100, Min 1!");
@@ -88,8 +108,8 @@ public class Tester {
                     popup.setLocationRelativeTo(null);
                     threadinput.setEditable(true);
                 }
-                
-                threadNum.setText("Number of threads: " + num);
+
+                threadNum.setText("Number of threads: " + (pool == null ? "0" : pool.getSize()));
             }
         });
         
@@ -112,7 +132,65 @@ public class Tester {
                     taskQ.setText("Tasks in queue: " + pool.getTasks());
                 }
             }
-        });              
+        });
+        
+        destroy.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tasksButton.setEnabled(false);
+                resize.setEnabled(false);
+                destroy.setEnabled(false);
+                threadinput.setEditable(true);
+                threadsButton.setEnabled(true);
+                try {
+                    pool.destroyPool();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                threadNum.setText("Number of threads: " + (pool == null ? "0" : pool.getSize()));
+            }
+        });
+        
+        resize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tasksButton.setEnabled(false);
+                resize.setEnabled(false);
+                destroy.setEnabled(false);
+                threadinput.setEditable(true);
+                threadsButton.setEnabled(false);
+                
+                String text = threadinput.getText().trim();
+                int num = 0;
+                if (text.matches("[0-9]+")) {
+                    num = Integer.parseInt(text);
+                    if (num <= 100 && num > 0) {
+                        try {
+                            pool.resize(num);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        destroy.setEnabled(true);
+                        resize.setEnabled(true);
+                        tasksButton.setEnabled(true);
+                    } else {
+                        threadinput.setText("Max 100, Min 1!");
+                        threadinput.setEditable(true);
+                    }
+                } else {
+
+                    JFrame popup = new JFrame();
+                    popup.add(new JLabel("Enter a single positive integer greater than 0 only."), BorderLayout.NORTH);
+                    popup.setVisible(true);
+                    popup.setAlwaysOnTop(true);
+                    popup.setSize(300, 300);
+                    popup.setLocationRelativeTo(null);
+                    threadinput.setEditable(true);
+                }
+
+                threadNum.setText("Number of threads: " + (pool == null ? "0" : pool.getSize()));
+            }
+        });
        
     }
     
@@ -133,11 +211,16 @@ public class Tester {
                 int y = 0;
 
                 for (int i = 0; i < iLimit; i++) {
-                    if (pool.getThreads()[i].getState() == Thread.State.WAITING) {
+                    if (pool.getThreads()[i] != null && pool.getThreads()[i].getState() == Thread.State.WAITING) {
                         g.setColor(Color.green);
-                    } else {
+                    } 
+                    else if (pool.getThreads()[i] != null) {
                         g.setColor(Color.red);
                     }
+                    else if (pool.getThreads()[i] == null){
+                        g.setColor(this.getBackground());
+                    }
+                        
                     if (x >= 10 ) {
                         y++;
                         x = 0;
