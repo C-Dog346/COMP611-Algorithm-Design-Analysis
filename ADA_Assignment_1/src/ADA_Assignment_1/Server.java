@@ -81,9 +81,7 @@ public class Server {
                 sendMessage("Send a message to all clients (Enter \"QUIT\" to finish): ");
                 do {
                     clientMessage = br.readLine();
-                    String response;
                     if ("QUIT".equals(clientMessage)) {
-                        response = "Quitting!";
                     }
                     else {
                         MessageSender message = new MessageSender(clientMessage);
