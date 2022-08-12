@@ -5,18 +5,27 @@
  */
 package ADA_Assignment_1;
 
+import java.util.UUID;
+
 /**
  *
  * @author Callum
  */
 public class UniqueIdentifier {
 
-    private static int COUNTER = 0;
+    private static UniqueIdentifier instance = new UniqueIdentifier();
+    
+    private UniqueIdentifier() {
+    }
+    
+    public static UniqueIdentifier getInstance() {
+        return instance;
+    }
 
     /**
      * @return the COUNTER
      */
-    public static synchronized int getCOUNTER() {
-        return ++COUNTER;
+    protected static String getId() {
+        return UUID.randomUUID().toString();
     }
 }

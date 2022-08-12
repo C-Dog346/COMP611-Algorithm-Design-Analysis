@@ -60,7 +60,7 @@ public class Server {
         System.out.println("Server finishing");
     }
 
-    private class ChatConnection implements Runnable {
+    private class ChatConnection implements Runnable, TaskObserver {
 
         private Socket socket;
         private Server server;
@@ -90,7 +90,14 @@ public class Server {
                     else {
                         //server.broadcastMessage(clientMessage);
                         MessageSender message = new MessageSender(clientMessage);
-                        message.notifyAll();
+
+                        for (ChatConnection c : connections) {
+                            if (!c.socket.isClosed()) {
+                                message.addListener(c);
+                            }
+                        }
+                        pool.perform(message);
+                        //System.out.println("Broadcast finished");
                     }
                 }
                 while (!"QUIT".equals(clientMessage));
@@ -114,6 +121,12 @@ public class Server {
             catch (IOException e) {
                 System.err.println("Server error 3: " + e);
             }
+        }
+        
+        @Override
+        public void update(Task o, Object arg) {
+            //System.out.println("Notified");
+            sendMessage((String) arg);
         }
     }
 

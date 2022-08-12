@@ -17,14 +17,16 @@ public abstract class Task<E, F> implements Runnable {
 
     private final ArrayList<TaskObserver> listeners;
     private Object param;
+    private String id;
 
     public Task(E param) {
         listeners = new ArrayList<>();
         this.param = param;
+        id = UniqueIdentifier.getId();
     }
 
-    public int getId() {
-        return UniqueIdentifier.getCOUNTER();
+    public String getId() {
+        return id;
     }
 
     public void addListener(TaskObserver<F> o) {

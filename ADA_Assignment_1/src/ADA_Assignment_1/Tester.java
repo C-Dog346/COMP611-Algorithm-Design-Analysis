@@ -128,7 +128,7 @@ public class Tester {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (pool != null) {                    
-                    pool.perform(new MockTask<String, String>("TEST"));
+                    //pool.perform(new MockTask<String, String>("TEST"));
                     taskQ.setText("Tasks in queue: " + pool.getTasks());
                 }
             }
