@@ -1,30 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ADA_Assignment_1;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author Callum
- * @param <E>
- * @param <F>
+ * @author coola
  */
-public abstract class Task<E, F> implements Runnable {
+public class MockTask<E, F> extends Task<E, F> {
 
-    private ArrayList<TaskObserver> listeners;
+    private final ArrayList<TaskObserver> listeners;
     private Object param;
     private String id;
 
-    public Task(E param) {
+    public MockTask(E param) {
+        super(param);
         listeners = new ArrayList<>();
         this.param = param;
         id = UniqueIdentifier.getId();
     }
-    
+
     public String getId() {
         return id;
     }
@@ -40,8 +36,18 @@ public abstract class Task<E, F> implements Runnable {
     protected void notifyAll(F progress) {
         for (TaskObserver o : listeners) {
             synchronized (o) {
-                o.update(this, param);
+                o.notify();
             }
         }
     }
+
+    @Override
+    public void run() {        
+        System.out.println("Running task -> sleeping");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MockTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }        
 }
