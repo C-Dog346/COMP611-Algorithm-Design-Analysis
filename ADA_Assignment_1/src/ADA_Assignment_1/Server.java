@@ -77,7 +77,6 @@ public class Server {
                 BufferedReader br = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()));
                 PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                // play the game until value is correctly guessed
                 String clientMessage = null;
                 sendMessage("Send a message to all clients (Enter \"QUIT\" to finish): ");
                 do {
@@ -85,10 +84,8 @@ public class Server {
                     String response;
                     if ("QUIT".equals(clientMessage)) {
                         response = "Quitting!";
-                        //pw.println(response);
                     }
                     else {
-                        //server.broadcastMessage(clientMessage);
                         MessageSender message = new MessageSender(clientMessage);
 
                         for (ChatConnection c : connections) {
@@ -96,8 +93,16 @@ public class Server {
                                 message.addListener(c);
                             }
                         }
+                        
                         pool.perform(message);
-                        //System.out.println("Broadcast finished");
+
+                        
+                        
+                        for (ChatConnection c : connections) {
+                            if (!c.socket.isClosed()) {
+                                message.removeListener(c);
+                            }
+                        }
                     }
                 }
                 while (!"QUIT".equals(clientMessage));

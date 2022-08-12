@@ -122,6 +122,7 @@ public class Tester {
             }
 
         });
+        
         taskDisplayThread.start();
 
         tasksButton.addActionListener(new ActionListener() {
