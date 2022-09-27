@@ -8,15 +8,11 @@ package ada_assignment_3;
 /**
  *
  * @author Callum
- * @param <E>
  */
-public class Driver<E> {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-
+abstract class Persistent {
+    
+    public abstract void nodeVisited();
+    
+    
+    
 }
