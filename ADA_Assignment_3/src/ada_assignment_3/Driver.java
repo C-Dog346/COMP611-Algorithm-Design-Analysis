@@ -8,9 +8,8 @@ package ada_assignment_3;
 /**
  *
  * @author Callum
- * @param <E>
  */
-public class Driver<E> {
+public class Driver {
 
     /**
      * @param args the command line arguments

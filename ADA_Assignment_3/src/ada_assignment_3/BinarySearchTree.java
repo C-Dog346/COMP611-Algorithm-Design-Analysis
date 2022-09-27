@@ -27,7 +27,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
     private int numElements;
     protected BinaryTreeNode rootNode;
-    private Comparator<? super E> comparator;//null for natural ordering
+    private Comparator<? super E> comparator; // null for natural ordering
     private E fromElement, toElement; // bounds for visible view of tree
 
     public BinarySearchTree() {
@@ -106,6 +106,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         if (rootNode == null) {
             rootNode = newNode;
             added = true;
+            //nodeVisited(rootNode);
         }
         else {  // find where to add newNode
             BinaryTreeNode currentNode = rootNode;
@@ -118,9 +119,11 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                         currentNode.leftChild = newNode;
                         done = true;
                         added = true;
+                        //nodeVisited(currentNode.leftChild);
                     }
                     else {
                         currentNode = currentNode.leftChild;
+                        //nodeVisited(currentNode);
                     }
                 }
                 else if (comparison > 0)//newNode is greater than currentNode
@@ -129,9 +132,11 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                         currentNode.rightChild = newNode;
                         done = true;
                         added = true;
+                        //nodeVisited(currentNode.rightChild);
                     }
                     else {
                         currentNode = currentNode.rightChild;
+                        //nodeVisited(currentNode);
                     }
                 }
                 else if (comparison == 0) // newNode equal to currentNode

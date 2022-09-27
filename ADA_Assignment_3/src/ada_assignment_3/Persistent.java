@@ -12,7 +12,5 @@ package ada_assignment_3;
 abstract class Persistent {
     
     public abstract void nodeVisited();
-    
-    
-    
+        
 }
