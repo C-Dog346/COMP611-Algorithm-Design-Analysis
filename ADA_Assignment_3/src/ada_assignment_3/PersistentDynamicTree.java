@@ -9,8 +9,12 @@ package ada_assignment_3;
  *
  * @author Callum
  */
-abstract class Persistent {
-    
-    public abstract void nodeVisited();
+public class PersistentDynamicTree extends BinarySearchTree {
+
+    @Override
+    public void nodeVisited(BinaryTreeNode node) {
         
+    }
 }
+
+

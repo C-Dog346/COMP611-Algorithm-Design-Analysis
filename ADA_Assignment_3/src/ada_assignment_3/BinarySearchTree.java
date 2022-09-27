@@ -496,4 +496,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             throw new UnsupportedOperationException();
         }
     }
+    
+    public void nodeVisited(BinaryTreeNode node) {}
+    
 }
