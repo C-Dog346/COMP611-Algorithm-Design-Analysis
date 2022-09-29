@@ -82,7 +82,7 @@ public class TreeGUI extends JPanel implements ActionListener {
 
     public static void main(String[] args) {
         //build tree
-        BinarySearchTree<Integer> testTree = new BinarySearchTree();
+        BinarySearchTree<Integer> testTree = new PersistentDynamicTree();
         testTree.add(100);
         testTree.add(50);
         testTree.add(25);
@@ -93,6 +93,7 @@ public class TreeGUI extends JPanel implements ActionListener {
         testTree.add(125);
         testTree.add(112);
         testTree.add(175);
+        
 
         //max level tree (for GUI)
         BinarySearchTree<Integer> maxTree = new BinarySearchTree();
@@ -117,8 +118,12 @@ public class TreeGUI extends JPanel implements ActionListener {
 
         //build GUI
         TreeGUI test = new TreeGUI(testTree);
+        testTree.add(55);
+        TreeGUI test2 = new TreeGUI(testTree);
+        
 //        TreeGUI test = new TreeGUI(maxTree);
         test.StartGUI();
+        test2.StartGUI();
     }
 }
 

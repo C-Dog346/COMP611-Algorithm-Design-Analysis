@@ -14,9 +14,12 @@ import java.util.ArrayList;
 public class PersistentDynamicTree extends BinarySearchTree {
     
     private ArrayList<BinaryTreeNode> dupeList;
+    protected ArrayList<BinaryTreeNode> versionList;
     
     public PersistentDynamicTree() {
         dupeList = new ArrayList();
+        versionList = new ArrayList();
+        //versionList.add(tree.rootNode);
     }
     
     @Override
@@ -28,14 +31,25 @@ public class PersistentDynamicTree extends BinarySearchTree {
     @Override
     public void allNodesVisited() {
         for (int i = 0; i < dupeList.size(); i++) {
-            if (dupeList.get(i).leftChild.equals(dupeList.get(i+1))) {
-                dupeList.get(i).leftChild = dupeList.get(i+1);
-            }
-            else if (dupeList.get(i).rightChild.equals(dupeList.get(i+1))) {
-                dupeList.get(i).rightChild = dupeList.get(i+1);
-            }
+            if (dupeList.size() != 1+i)
+                if (dupeList.get(i).leftChild.equals(dupeList.get(i+1))) {
+                    dupeList.get(i).leftChild = dupeList.get(i+1);
+                }
+                else if (dupeList.get(i).rightChild.equals(dupeList.get(i+1))) {
+                    dupeList.get(i).rightChild = dupeList.get(i+1);
+                }
         }
+        
+        versionList.add(dupeList.get(0));
+        dupeList.clear();
     }
+    
+//    public BinarySearchTree createTree(int index) {
+//        BinarySearchTree tree = new BinarySearchTree();
+//        tree.rootNode = versionList.get(index);
+//        
+//        return tree;
+//    }
 }
 
 

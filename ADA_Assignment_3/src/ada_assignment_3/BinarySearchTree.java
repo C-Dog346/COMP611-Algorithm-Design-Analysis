@@ -110,9 +110,9 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         }
         BinaryTreeNode newNode = new BinaryTreeNode(o);
         boolean added = false;
-        nodeVisited(rootNode);
         if (rootNode == null) {
             rootNode = newNode;
+            nodeVisited(rootNode);
             added = true;
         }
         else {  // find where to add newNode
