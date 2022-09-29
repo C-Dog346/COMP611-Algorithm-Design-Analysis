@@ -14,6 +14,7 @@ package ada_assignment_3;
  * This code was supplied by @author Andrew Ensor via the Canvas Discussions
  * fourm
  */
+import java.awt.Graphics;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Comparator;
@@ -29,6 +30,12 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     protected BinaryTreeNode rootNode;
     private Comparator<? super E> comparator; // null for natural ordering
     private E fromElement, toElement; // bounds for visible view of tree
+    private final int GUI_MIDDLE = 462;
+    private final int GUI_START_Y = 50;
+    private final int GUI_NODE_LENGTH = 75;
+    private final int GUI_NODE_WIDTH = 30;
+    private final int GUI_NODE_DISTANCE = 250;
+    private final int GUI_CHILD_OFFSET_Y = 100;
 
     public BinarySearchTree() {
         super();
@@ -103,15 +110,16 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         }
         BinaryTreeNode newNode = new BinaryTreeNode(o);
         boolean added = false;
+        nodeVisited(rootNode);
         if (rootNode == null) {
             rootNode = newNode;
             added = true;
-            //nodeVisited(rootNode);
         }
         else {  // find where to add newNode
             BinaryTreeNode currentNode = rootNode;
             boolean done = false;
             while (!done) {
+                nodeVisited(currentNode);
                 int comparison = compare(o, currentNode.element);
                 if (comparison < 0) // newNode is less than currentNode
                 {
@@ -119,11 +127,9 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                         currentNode.leftChild = newNode;
                         done = true;
                         added = true;
-                        //nodeVisited(currentNode.leftChild);
                     }
                     else {
                         currentNode = currentNode.leftChild;
-                        //nodeVisited(currentNode);
                     }
                 }
                 else if (comparison > 0)//newNode is greater than currentNode
@@ -132,11 +138,9 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                         currentNode.rightChild = newNode;
                         done = true;
                         added = true;
-                        //nodeVisited(currentNode.rightChild);
                     }
                     else {
                         currentNode = currentNode.rightChild;
-                        //nodeVisited(currentNode);
                     }
                 }
                 else if (comparison == 0) // newNode equal to currentNode
@@ -458,6 +462,26 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             output += "]";
             return output;
         }
+        
+            //GUI draw method
+        public void draw(Graphics g, int x, int y, int level) {
+
+            //draw node
+            g.drawRect(x, y, GUI_NODE_LENGTH, GUI_NODE_WIDTH);
+            g.drawString(this.element.toString(), x + 10, y + 20);
+
+            //recursive children
+            if (this.leftChild != null) {
+                this.leftChild.draw(g, x - (GUI_NODE_DISTANCE / (level + 1)), y + GUI_CHILD_OFFSET_Y, level + 1);
+                g.drawLine(x + (GUI_NODE_LENGTH / 2), y + GUI_NODE_WIDTH,
+                        x - (GUI_NODE_DISTANCE / (level + 1)) + (GUI_NODE_LENGTH / 2), y + GUI_CHILD_OFFSET_Y);
+            }
+            if (this.rightChild != null) {
+                this.rightChild.draw(g, x + (GUI_NODE_DISTANCE / (level + 1)), y + GUI_CHILD_OFFSET_Y, level + 1);
+                g.drawLine(x + (GUI_NODE_LENGTH / 2), y + GUI_NODE_WIDTH,
+                        x + (GUI_NODE_DISTANCE / (level + 1)) + (GUI_NODE_LENGTH / 2), y + GUI_CHILD_OFFSET_Y);
+            }
+        }
     }
 
     // inner class that represents an Iterator for a binary tree
@@ -494,6 +518,15 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
         public void remove() {
             throw new UnsupportedOperationException();
+        }
+    }
+    
+       //GUI draw start
+    public void draw(Graphics g) {
+        if (rootNode != null) {
+            rootNode.draw(g, GUI_MIDDLE, GUI_START_Y, 0);
+        } else {
+            throw new NullPointerException("Root does not exist!");
         }
     }
     
