@@ -152,6 +152,8 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         if (added) {
             numElements++;
         }
+        
+        allNodesVisited();
         return added;
     }
 
@@ -197,6 +199,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                     removalNode = rootNode.rightChild;
                 }
                 while (removalNode != null && !removed) {  // determine whether the removalNode has been found
+                    nodeVisited(removalNode);
                     int comparison = compare(element, removalNode.element);
                     if (comparison == 0) {
                         if (removalNode == parentNode.leftChild) {
@@ -531,5 +534,6 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
     
     public void nodeVisited(BinaryTreeNode node) {}
+    public void allNodesVisited() {}
     
 }
