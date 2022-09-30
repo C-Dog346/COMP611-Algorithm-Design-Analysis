@@ -14,6 +14,7 @@ package ada_assignment_3;
  * This code was supplied by @author Andrew Ensor via the Canvas Discussions
  * fourm
  */
+import java.awt.Graphics;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Comparator;
@@ -22,12 +23,20 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 
-public class BinarySearchTree<E> extends AbstractSet<E>
-        implements SortedSet<E> {
+public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> {
 
+    //GUI variables
+    private final int GUI_MIDDLE = 462;
+    private final int GUI_START_Y = 50;
+    private final int GUI_NODE_LENGTH = 75;
+    private final int GUI_NODE_WIDTH = 30;
+    private final int GUI_NODE_DISTANCE = 250;
+    private final int GUI_CHILD_OFFSET_Y = 100;
+
+    //tree variables
     private int numElements;
     protected BinaryTreeNode rootNode;
-    private Comparator<? super E> comparator;//null for natural ordering
+    private Comparator<? super E> comparator; // null for natural ordering
     private E fromElement, toElement; // bounds for visible view of tree
 
     public BinarySearchTree() {
@@ -74,8 +83,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     private int countNodes(BinaryTreeNode node) {
         if (node == null) {
             return 0;
-        }
-        else {
+        } else {
             return countNodes(node.leftChild) + 1
                     + countNodes(node.rightChild);
         }
@@ -104,37 +112,37 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         BinaryTreeNode newNode = new BinaryTreeNode(o);
         boolean added = false;
         if (rootNode == null) {
-            rootNode = newNode;
+              rootNode = newNode;System.out.println("OVER HERE");
+//            nodeVisited(rootNode); //hook
+            allNodesVisited(); //hook
             added = true;
-        }
-        else {  // find where to add newNode
+        } else {  // find where to add newNode
             BinaryTreeNode currentNode = rootNode;
             boolean done = false;
             while (!done) {
+                nodeVisited(currentNode); //hook
                 int comparison = compare(o, currentNode.element);
                 if (comparison < 0) // newNode is less than currentNode
                 {
                     if (currentNode.leftChild == null) {  // add newNode as leftChild
+                        allNodesVisited(); //hook
                         currentNode.leftChild = newNode;
                         done = true;
                         added = true;
-                    }
-                    else {
+                    } else {
                         currentNode = currentNode.leftChild;
                     }
-                }
-                else if (comparison > 0)//newNode is greater than currentNode
+                } else if (comparison > 0)//newNode is greater than currentNode
                 {
                     if (currentNode.rightChild == null) {  // add newNode as rightChild
+                        allNodesVisited(); //hook
                         currentNode.rightChild = newNode;
                         done = true;
                         added = true;
-                    }
-                    else {
+                    } else {
                         currentNode = currentNode.rightChild;
                     }
-                }
-                else if (comparison == 0) // newNode equal to currentNode
+                } else if (comparison == 0) // newNode equal to currentNode
                 {
                     done = true; // no duplicates in this binary tree impl.
                 }
@@ -143,6 +151,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         if (added) {
             numElements++;
         }
+
         return added;
     }
 
@@ -151,14 +160,11 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     private int compare(E element1, E element2) {
         if (comparator != null) {
             return comparator.compare(element1, element2);
-        }
-        else if (element1 != null && element1 instanceof Comparable) {
+        } else if (element1 != null && element1 instanceof Comparable) {
             return ((Comparable) element1).compareTo(element2); //unchecked
-        }
-        else if (element2 != null && element2 instanceof Comparable) {
+        } else if (element2 != null && element2 instanceof Comparable) {
             return -((Comparable) element2).compareTo(element1);//unchecked
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -175,15 +181,13 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             if (compare(element, rootNode.element) == 0) {
                 rootNode = makeReplacement(rootNode);
                 removed = true;
-            }
-            else {  // search for the element o
+            } else {  // search for the element o
                 BinaryTreeNode parentNode = rootNode;
                 BinaryTreeNode removalNode;
                 // determine whether to traverse to left or right of root
                 if (compare(element, rootNode.element) < 0) {
                     removalNode = rootNode.leftChild;
-                }
-                else // compare(element, rootNode.element)>0
+                } else // compare(element, rootNode.element)>0
                 {
                     removalNode = rootNode.rightChild;
                 }
@@ -193,21 +197,18 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                         if (removalNode == parentNode.leftChild) {
                             parentNode.leftChild
                                     = makeReplacement(removalNode);
-                        }
-                        else // removalNode==parentNode.rightChild
+                        } else // removalNode==parentNode.rightChild
                         {
                             parentNode.rightChild
                                     = makeReplacement(removalNode);
                         }
                         removed = true;
-                    }
-                    else // determine whether to traverse to left or right
+                    } else // determine whether to traverse to left or right
                     {
                         parentNode = removalNode;
                         if (comparison < 0) {
                             removalNode = removalNode.leftChild;
-                        }
-                        else // comparison>0
+                        } else // comparison>0
                         {
                             removalNode = removalNode.rightChild;
                         }
@@ -228,12 +229,10 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         // check cases when removalNode has only one child
         if (removalNode.leftChild != null && removalNode.rightChild == null) {
             replacementNode = removalNode.leftChild;
-        }
-        else if (removalNode.leftChild == null
+        } else if (removalNode.leftChild == null
                 && removalNode.rightChild != null) {
             replacementNode = removalNode.rightChild;
-        }
-        // check case when removalNode has two children
+        } // check case when removalNode has two children
         else if (removalNode.leftChild != null
                 && removalNode.rightChild != null) {  // find the inorder successor and use it as replacementNode
             BinaryTreeNode parentNode = removalNode;
@@ -243,13 +242,11 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             // the left child of replacementNode
             {
                 replacementNode.leftChild = removalNode.leftChild;
-            }
-            else {  //find left-most descendant of right subtree of removalNode
+            } else {  //find left-most descendant of right subtree of removalNode
                 do {
                     parentNode = replacementNode;
                     replacementNode = replacementNode.leftChild;
-                }
-                while (replacementNode.leftChild != null);
+                } while (replacementNode.leftChild != null);
                 // move the right child of replacementNode to be the left
                 // child of the parent of replacementNode
                 parentNode.leftChild = replacementNode.rightChild;
@@ -290,11 +287,9 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             int comparison = compare(currentNode.element, element);
             if (comparison == 0) {
                 found = true;
-            }
-            else if (comparison < 0) {
+            } else if (comparison < 0) {
                 currentNode = currentNode.rightChild;
-            }
-            else // comparison>0
+            } else // comparison>0
             {
                 currentNode = currentNode.leftChild;
             }
@@ -326,8 +321,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 // move to the left child to see if a smaller element okay
                 // since all in right subtree will be larger
                 currentNode = currentNode.leftChild;
-            }
-            else // compare(currentNode.element, fromElement)<0
+            } else // compare(currentNode.element, fromElement)<0
             {  // move to the right child since this element too small
                 // so all in left subtree will also be too small
                 currentNode = currentNode.rightChild;
@@ -336,8 +330,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         if (leastYetNode == null) // no satisfactory node found
         {
             return null;
-        }
-        else {
+        } else {
             return leastYetNode.element;
         }
     }
@@ -364,8 +357,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 // move to the right child to see if a greater element okay
                 // since all in left subtree will be smaller
                 currentNode = currentNode.rightChild;
-            }
-            else // compare(currentNode.element, toElement)>=0
+            } else // compare(currentNode.element, toElement)>=0
             {  // move to the left child since this element too large
                 // so all in right subtree will also be too large
                 currentNode = currentNode.leftChild;
@@ -374,8 +366,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         if (greatestYetNode == null) // no satisfactory node found
         {
             return null;
-        }
-        else {
+        } else {
             return greatestYetNode.element;
         }
     }
@@ -453,6 +444,25 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             output += "]";
             return output;
         }
+
+        //GUI draw method
+        public void draw(Graphics g, int x, int y, int level) {
+            //draw node
+            g.drawRect(x, y, GUI_NODE_LENGTH, GUI_NODE_WIDTH);
+            g.drawString(this.element.toString(), x + 10, y + 20);
+
+            //recursive children
+            if (this.leftChild != null) {
+                this.leftChild.draw(g, x - (GUI_NODE_DISTANCE / (level + 1)), y + GUI_CHILD_OFFSET_Y, level + 1);
+                g.drawLine(x + (GUI_NODE_LENGTH / 2), y + GUI_NODE_WIDTH,
+                        x - (GUI_NODE_DISTANCE / (level + 1)) + (GUI_NODE_LENGTH / 2), y + GUI_CHILD_OFFSET_Y);
+            }
+            if (this.rightChild != null) {
+                this.rightChild.draw(g, x + (GUI_NODE_DISTANCE / (level + 1)), y + GUI_CHILD_OFFSET_Y, level + 1);
+                g.drawLine(x + (GUI_NODE_LENGTH / 2), y + GUI_NODE_WIDTH,
+                        x + (GUI_NODE_DISTANCE / (level + 1)) + (GUI_NODE_LENGTH / 2), y + GUI_CHILD_OFFSET_Y);
+            }
+        }
     }
 
     // inner class that represents an Iterator for a binary tree
@@ -490,5 +500,24 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         public void remove() {
             throw new UnsupportedOperationException();
         }
+    }
+
+    //GUI draw start
+    public void draw(Graphics g) {
+        if (rootNode != null) {
+            rootNode.draw(g, GUI_MIDDLE, GUI_START_Y, 0);
+        } else {
+            throw new NullPointerException("Root does not exist!");
+        }
+    }
+
+    // hook method - called when a Node is visited
+    public void nodeVisited(BinaryTreeNode node) {
+        // default implementation does nothing
+    }
+
+    // hook method - called when the function finishes
+    public void allNodesVisited() {
+        // default implementation does nothing
     }
 }
