@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Callum Geoffrey Clow, 00000000
+    Caitlyn Young, 20109380
  */
 package ada_assignment_3;
 
@@ -15,13 +14,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-/**
- *
- * @author Cat and Macx
- * 
- */
-
 
 public class TreeGUI extends JPanel implements ActionListener {
 
@@ -43,8 +35,8 @@ public class TreeGUI extends JPanel implements ActionListener {
         super.add(this.drawPanel, BorderLayout.CENTER);
     }
 
-    public void StartGUI() {
-        JFrame frame = new JFrame("TREEEEEEEEEEESSS");
+    public void StartGUI(int version) {
+        JFrame frame = new JFrame("Version: " + version);
         frame.setLocation(20, 20);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(this);
@@ -79,51 +71,4 @@ public class TreeGUI extends JPanel implements ActionListener {
             tree.draw(g);
         }
     }
-
-    public static void main(String[] args) {
-        //build tree
-        BinarySearchTree<Integer> testTree = new PersistentDynamicTree();
-        testTree.add(100);
-        testTree.add(50);
-        testTree.add(25);
-        testTree.add(75);
-        testTree.add(80);
-        testTree.add(200);
-        testTree.add(150);
-        testTree.add(125);
-        testTree.add(112);
-        testTree.add(175);
-        
-
-        //max level tree (for GUI)
-        BinarySearchTree<Integer> maxTree = new BinarySearchTree();
-        maxTree.add(100);
-        maxTree.add(0);
-        maxTree.add(200);
-        maxTree.add(-100);
-        maxTree.add(50);
-        maxTree.add(150);
-        maxTree.add(300);
-        maxTree.add(-200);
-        maxTree.add(-50);
-        maxTree.add(25);
-        maxTree.add(75);
-        maxTree.add(350);
-        maxTree.add(125);
-        maxTree.add(175);
-        maxTree.add(250);
-        //node crossover (>4 levels)
-//        maxTree.add(190);
-//        maxTree.add(225);
-
-        //build GUI
-        TreeGUI test = new TreeGUI(testTree);
-        testTree.add(55);
-        TreeGUI test2 = new TreeGUI(testTree);
-        
-//        TreeGUI test = new TreeGUI(maxTree);
-        test.StartGUI();
-        test2.StartGUI();
-    }
 }
-
