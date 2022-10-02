@@ -1,5 +1,5 @@
 /*
-    Callum Geoffrey Clow, 00000000
+    Callum Geoffrey Clow, 20119952
     Caitlyn Young, 20109380
  */
 package ada_assignment_3;
@@ -15,18 +15,20 @@ public class Driver {
 
         System.out.println("adding 0...");
         PDTree.add(0);
-//        System.out.println("adding 200...");
-//        PDTree.add(200);
+        System.out.println("adding 200...");
+        PDTree.add(200);
         System.out.println("adding -100...");
         PDTree.add(-100);
+//        PDTree.remove(-100);
+//        PDTree.add(-101);
         System.out.println("adding 50...");
         PDTree.add(50);
         System.out.println("adding 150...");
         PDTree.add(150);
-//        System.out.println("adding 300...");
-//        PDTree.add(300);
-        System.out.println("adding -200...");
-        PDTree.add(-200);
+        System.out.println("adding 300...");
+        PDTree.add(300);
+//        System.out.println("adding -200...");
+//        PDTree.add(-200);
 //        System.out.println("adding -50...");
 //        PDTree.add(-50);
 //        System.out.println("adding 25...");
@@ -40,10 +42,11 @@ public class Driver {
 //        System.out.println("adding 175...");
 //        PDTree.add(175);
 //        System.out.println("adding 250...");
-        PDTree.add(250);
+//        PDTree.add(250);
 
         System.out.println("____________________________________________________");
-        System.out.println("Number of Versions = " + PDTree.versionList.size() + "\n");
+        System.out.println("Number of Versions = " + PDTree.versionList.size());
+        System.out.println("Version Number = " + PDTree.versionNum + "\n");
         for (int i = 0; i < PDTree.versionList.size(); i++) {
             System.out.println("Version " + (i + 1) + " -> " + PDTree.createTree(i).toString());
 //            System.out.println("Version " + (i + 1) + " -> " + PDTree.versionList.get(i));
@@ -79,8 +82,11 @@ public class Driver {
 //
 //        System.out.println("adding 999...");
 //        testPDTree.add(999);
-////        System.out.println("adding 88...");
-////        testPDTree.add(88);
+//        System.out.println("adding 88...");
+//        testPDTree.add(88);
+//
+//        System.out.println("____________________________________________________");
+//        System.out.println("after changed: " + testPDTree.versionList.toString());
 ////
 //        System.out.println("____________________________________________________");
 //        System.out.println("Number of Versions = " + testPDTree.versionList.size() + "\n");
