@@ -88,7 +88,7 @@ public class RedBlackTree<E> extends PersistentDynamicTree {
     }
     
     @Override
-    public void allNodesVisited() {
+    public void allNodesVisited(boolean add) {
         System.out.println("RedBlackTree allNodesVisited");
     }
 }

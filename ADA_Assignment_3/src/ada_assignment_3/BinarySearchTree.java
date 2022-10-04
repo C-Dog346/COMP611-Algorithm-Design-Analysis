@@ -159,7 +159,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
             numElements++;
         }
 
-        allNodesVisited();
+        allNodesVisited(true);
         return added;
     }
 
@@ -189,6 +189,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
             throw new IllegalArgumentException("Outside view");
         }
         if (rootNode != null) {  // check if root to be removed
+            nodeVisited(rootNode); //hook
             if (compare(element, rootNode.element) == 0) {
                 rootNode = makeReplacement(rootNode);
                 removed = true;
@@ -205,27 +206,29 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
                     removalNode = rootNode.rightChild;
                 }
                 while (removalNode != null && !removed) {  // determine whether the removalNode has been found
+
                     int comparison = compare(element, removalNode.element);
                     if (comparison == 0) {
+                        nodeVisited(removalNode); //hook
                         if (removalNode == parentNode.leftChild) {
+
                             parentNode.leftChild
                                     = makeReplacement(removalNode);
+
                         }
-                        else // removalNode==parentNode.rightChild
-                        {
+                        else {// removalNode==parentNode.rightChild
                             parentNode.rightChild
                                     = makeReplacement(removalNode);
                         }
                         removed = true;
                     }
-                    else // determine whether to traverse to left or right
-                    {
+                    else { // determine whether to traverse to left or right
                         parentNode = removalNode;
+                        nodeVisited(parentNode); //hook
                         if (comparison < 0) {
                             removalNode = removalNode.leftChild;
                         }
-                        else // comparison>0
-                        {
+                        else { // comparison>0
                             removalNode = removalNode.rightChild;
                         }
                     }
@@ -235,6 +238,8 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
         if (removed) {
             numElements--;
         }
+
+        allNodesVisited(false); //hook
         return removed;
     }
 
@@ -276,6 +281,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
             }
         }
         // else both leftChild and rightChild null so no replacementNode
+        nodeVisited(replacementNode);
         return replacementNode;
     }
 
@@ -460,7 +466,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
         // returns a string representation of the node and
         // its children using inorder (left-this-right) traversal
         public String toString() {
-        String output = "[";
+            String output = "[";
             if (leftChild != null) {
                 output += "" + leftChild;
             }
@@ -469,7 +475,8 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
                 output += "" + rightChild;
             }
             output += "]";
-            return output;}
+            return output;
+        }
 
         //GUI draw method
         public void draw(Graphics g, int x, int y, int level) {
@@ -544,7 +551,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
     }
 
     // hook method - called when the function finishes
-    public void allNodesVisited() {
+    public void allNodesVisited(boolean add) {
         // default implementation does nothing
     }
 }
