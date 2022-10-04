@@ -36,47 +36,34 @@ public class PersistentDynamicTree extends BinarySearchTree {
 
         BinaryTreeNode newNode = new BinaryTreeNode(node.element);
         newNode.leftChild = node.leftChild;
-        System.out.println("\tCHILD_L = " + node.leftChild);
         newNode.rightChild = node.rightChild;
-        System.out.println("\tCHILD_R = " + node.rightChild);
 //
         dupeList.add(newNode);
-        System.out.println("\tNew Node = " + newNode);
     }
 
     @Override
     public void allNodesVisited() {
-        System.out.println("LIST: " + dupeList.toString());
 
         if (dupeList.isEmpty()) {
             versionList.add(rootNode);
-            System.out.println("added @" + (versionList.indexOf(rootNode)));
-            System.out.println("add 1: " + versionList.toString());
 
         } else if (this.size() != 1) {
             for (int i = 0; i < dupeList.size() - 1; i++) {
-                System.out.println("howdy: " + i);
 
                 if (dupeList.get(i).leftChild != null
                         && dupeList.get(i).leftChild.element.equals(dupeList.get(i + 1).element)) {
-                    System.out.println("~~~~~Left child~~~~~");
                     dupeList.get(i).leftChild = dupeList.get(i + 1);
                 }
 
                 if (dupeList.get(i).rightChild != null
                         && dupeList.get(i).rightChild.element.equals(dupeList.get(i + 1).element)) {
-                    System.out.println("~~~~~right child~~~~~");
                     dupeList.get(i).rightChild = dupeList.get(i + 1);
                 }
             }
             versionList.add(versionList.size() - 1, dupeList.get(0));
-            System.out.println("added @" + (versionList.size() - 1));
-            System.out.println("add 2: " + versionList.toString());
 
         } else {
             versionList.add(versionList.size() - 1, dupeList.get(0));
-            System.out.println("added @" + (versionList.indexOf(dupeList.get(0))));
-            System.out.println("add 3: " + versionList.toString());
         }
 
         dupeList.clear();

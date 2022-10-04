@@ -112,7 +112,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
         BinaryTreeNode newNode = new BinaryTreeNode(o);
         boolean added = false;
         if (rootNode == null) {
-              rootNode = newNode;System.out.println("OVER HERE");
+              rootNode = newNode;
 //            nodeVisited(rootNode); //hook
             allNodesVisited(); //hook
             added = true;

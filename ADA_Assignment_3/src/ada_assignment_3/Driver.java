@@ -8,55 +8,55 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        System.out.println("____________________________________________________");
-        PersistentDynamicTree PDTree = new PersistentDynamicTree();
-        PDTree.add(100); //root
-        System.out.println("____________________________________________________");
-
-        System.out.println("adding 0...");
-        PDTree.add(0);
-//        System.out.println("adding 200...");
-//        PDTree.add(200);
-        System.out.println("adding -100...");
-        PDTree.add(-100);
-        System.out.println("adding 50...");
-        PDTree.add(50);
-        System.out.println("adding 150...");
-        PDTree.add(150);
-//        System.out.println("adding 300...");
-//        PDTree.add(300);
-        System.out.println("adding -200...");
-        PDTree.add(-200);
-//        System.out.println("adding -50...");
-//        PDTree.add(-50);
-//        System.out.println("adding 25...");
-//        PDTree.add(25);
-//        System.out.println("adding 75...");
-//        PDTree.add(75);
-//        System.out.println("adding 350...");
-//        PDTree.add(350);
-//        System.out.println("adding 125...");
-//        PDTree.add(125);
-//        System.out.println("adding 175...");
-//        PDTree.add(175);
-//        System.out.println("adding 250...");
-        PDTree.add(250);
-
-        System.out.println("____________________________________________________");
-        System.out.println("Number of Versions = " + PDTree.versionList.size() + "\n");
-        for (int i = 0; i < PDTree.versionList.size(); i++) {
-            System.out.println("Version " + (i + 1) + " -> " + PDTree.createTree(i).toString());
-//            System.out.println("Version " + (i + 1) + " -> " + PDTree.versionList.get(i));
-        }
-        System.out.println("____________________________________________________");
-
-        //build GUI
-        TreeGUI original = new TreeGUI(PDTree.createTree(0));
-        original.StartGUI(1);
-
-        TreeGUI newest = new TreeGUI(PDTree.createTree(PDTree.versionList.size() - 1));
-        newest.StartGUI(PDTree.versionList.size());
+//        System.out.println("____________________________________________________");
+//        PersistentDynamicTree PDTree = new PersistentDynamicTree();
+//        PDTree.add(100); //root
+//        System.out.println("____________________________________________________");
 //
+//        System.out.println("adding 0...");
+//        PDTree.add(0);
+////        System.out.println("adding 200...");
+////        PDTree.add(200);
+//        System.out.println("adding -100...");
+//        PDTree.add(-100);
+//        System.out.println("adding 50...");
+//        PDTree.add(50);
+//        System.out.println("adding 150...");
+//        PDTree.add(150);
+////        System.out.println("adding 300...");
+////        PDTree.add(300);
+//        System.out.println("adding -200...");
+//        PDTree.add(-200);
+////        System.out.println("adding -50...");
+////        PDTree.add(-50);
+////        System.out.println("adding 25...");
+////        PDTree.add(25);
+////        System.out.println("adding 75...");
+////        PDTree.add(75);
+////        System.out.println("adding 350...");
+////        PDTree.add(350);
+////        System.out.println("adding 125...");
+////        PDTree.add(125);
+////        System.out.println("adding 175...");
+////        PDTree.add(175);
+////        System.out.println("adding 250...");
+//        PDTree.add(250);
+//
+//        System.out.println("____________________________________________________");
+//        System.out.println("Number of Versions = " + PDTree.versionList.size() + "\n");
+//        for (int i = 0; i < PDTree.versionList.size(); i++) {
+//            System.out.println("Version " + (i + 1) + " -> " + PDTree.createTree(i).toString());
+////            System.out.println("Version " + (i + 1) + " -> " + PDTree.versionList.get(i));
+//        }
+//        System.out.println("____________________________________________________");
+//
+//        //build GUI
+//        TreeGUI original = new TreeGUI(PDTree.createTree(0));
+//        original.StartGUI(1);
+//
+//        TreeGUI newest = new TreeGUI(PDTree.createTree(PDTree.versionList.size() - 1));
+//        newest.StartGUI(PDTree.versionList.size());
+////
 //
 //        //existing tree test
 //        BinarySearchTree<Integer> testTree = new BinarySearchTree();
@@ -96,5 +96,16 @@ public class Driver {
 //
 //        TreeGUI existingChanged = new TreeGUI(testPDTree.createTree(testPDTree.versionList.size() - 1));
 //        existingChanged.StartGUI(testPDTree.versionList.size());
+
+
+        RedBlackTree rbt = new RedBlackTree();
+        rbt.add(5);
+        rbt.add(10);
+        rbt.add(15);
+        rbt.add(20);
+        rbt.add(1);
+        
+        System.out.println(rbt);
+        
     }
 }
