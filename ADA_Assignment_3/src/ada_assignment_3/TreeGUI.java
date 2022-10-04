@@ -21,7 +21,7 @@ public class TreeGUI extends JPanel implements ActionListener {
 
     protected BinarySearchTree tree1;
     protected PersistentDynamicTree tree2;
-//    protected BalancedPersistenDynamicTree tree3;
+    protected BalancedPersistentDynamicTree tree3;
     protected TreeType type;
 
     private JComboBox cmbVersions = null;
@@ -46,8 +46,8 @@ public class TreeGUI extends JPanel implements ActionListener {
             if (this.type.equals(TreeType.PERSISTENT_DYNAMIC)) {
                 this.fillVersions(tree2);
             } else {
-//                this.tree3 = (BalancedPersistentDynamicTree)tree;
-//                this.fillVersions((BalancedPersistentDynamicTree) tree);
+                this.tree3 = (BalancedPersistentDynamicTree)tree;
+                this.fillVersions((BalancedPersistentDynamicTree) tree);
             }
 
             JPanel pnlControl = new JPanel();
@@ -79,11 +79,11 @@ public class TreeGUI extends JPanel implements ActionListener {
         }
     }
 
-//    private void fillVersions(BalancedPersistentDynamicTree tree){
-//        for (int i = 0; i < tree.versionList.size(); i++) {
-//            this.cmbVersions.addItem(i);
-//        }
-//    }
+    private void fillVersions(BalancedPersistentDynamicTree tree){
+        for (int i = 0; i < tree.versionList.size(); i++) {
+            this.cmbVersions.addItem(i);
+        }
+    }
 //    
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -98,7 +98,7 @@ public class TreeGUI extends JPanel implements ActionListener {
     private class DrawPanel extends JPanel {
 
         public DrawPanel() {
-            super.setPreferredSize(new Dimension(1000, 600));
+            super.setPreferredSize(new Dimension(1400, 800));
             super.setBackground(Color.WHITE);
         }
 

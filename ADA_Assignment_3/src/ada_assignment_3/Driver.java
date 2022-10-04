@@ -7,11 +7,83 @@ package ada_assignment_3;
 public class Driver {
 
     public static void main(String[] args) {
+//        devTesting();
 
+////////////////////////////////////DEMO////////////////////////////////////
+        //make tree (BST)
+        BinarySearchTree<Integer> testTree = new BinarySearchTree();
+
+        testTree.add(100); //root node
+        testTree.add(50);
+        testTree.add(150);
+        testTree.add(25);
+        testTree.add(75);
+        testTree.add(125);
+        testTree.add(175);
+        testTree.add(110);
+        testTree.add(130);
+        testTree.add(105);
+        testTree.add(115);
+
+        //build GUI
+        TreeGUI existingChanged = new TreeGUI(testTree, TreeGUI.TreeType.BINARY_SEARCH_TREE);
+        existingChanged.StartGUI("Binary Search Tree");
+
+        //make tree (PDT) from existing tree
+        PersistentDynamicTree testPDTree = new PersistentDynamicTree(testTree);
+
+        //edit tree
+        testPDTree.add(90); //add node
+        testPDTree.remove(105); //remove leaf node
+        testPDTree.remove(50); //remove internal node
+        testPDTree.remove(100); //remove root node
+
+        //console output
+        System.out.println("____________________________________________________"
+                + "Persistent Dynamic Set"
+                + "____________________________________________________");
+
+        System.out.println("Number of Versions = " + testPDTree.versionList.size() + "\n");
+
+        for (int i = 0; i < testPDTree.versionList.size(); i++) {
+            System.out.println("Version " + (i + 1) + " -> " + testPDTree.versionList.get(i));
+        }
+        System.out.println("\nCurrent Tree -> " + testPDTree);
+        System.out.println("____________________________________________________"
+                + "______________________"
+                + "____________________________________________________");
+
+        //build GUI
+        TreeGUI existingGUI = new TreeGUI(testPDTree, TreeGUI.TreeType.PERSISTENT_DYNAMIC);
+        existingGUI.StartGUI("Persistent Dynamic Tree");
+        
+        ////-----------------------------------PBDT------------------------------------------ 
+        BalancedPersistentDynamicTree rbt = new BalancedPersistentDynamicTree();
+
+        rbt.add(5);
+        rbt.add(10);
+        rbt.add(7);
+        rbt.add(8);
+        rbt.add(3);
+        rbt.add(15);
+        rbt.add(20);
+        rbt.add(25);
+        rbt.add(1);
+
+        rbt.rightRotate(rbt.rootNode, null);
+        rbt.leftRotate(rbt.rootNode, null);
+        rbt.leftRotate(rbt.rootNode, null);
+
+        TreeGUI rbtGUI = new TreeGUI((BinarySearchTree) rbt, TreeGUI.TreeType.BINARY_SEARCH_TREE);
+        rbtGUI.StartGUI("RBT RBT RBT");
+    }
+
+    public static void devTesting() {
 //        System.out.println("____________________________________________________");
 //        PersistentDynamicTree PDTree = new PersistentDynamicTree();
 //        PDTree.add(100); //root
 //        System.out.println("Root = " + PDTree.rootNode);
+//        System.out.println("____________________________________________________");
 //
 ////        System.out.println("adding 0...");
 ////        PDTree.add(0);
@@ -107,7 +179,7 @@ public class Driver {
 //
 //        System.out.println("____________________________________________________");
 //        System.out.println("after changed: " + testPDTree.versionList.toString());
-//
+////
 //        System.out.println("____________________________________________________");
 //        System.out.println("Number of Versions = " + testPDTree.versionList.size() + "\n");
 //        for (int i = 0; i < testPDTree.versionList.size(); i++) {
@@ -123,18 +195,5 @@ public class Driver {
 //
 //        TreeGUI existingGUI = new TreeGUI(testPDTree, TreeGUI.TreeType.PERSISTENT_DYNAMIC);
 //        existingGUI.StartGUI("Persistent Dynamic Tree");
-
-            
-
-        BalancedPersistentDynamicTree rbt = new BalancedPersistentDynamicTree();
-        
-        rbt.add(5);
-        rbt.add(10);
-        rbt.add(15);
-        rbt.add(20);
-        rbt.add(25);
-        rbt.add(1);
-        
-        TreeGUI rbtGUI = new TreeGUI(rbt, TreeGUI.TreeType.BALANCED_PERSISTENT_DYNAMIC);
     }
 }

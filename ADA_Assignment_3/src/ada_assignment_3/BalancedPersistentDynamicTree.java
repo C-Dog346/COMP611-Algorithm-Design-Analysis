@@ -49,8 +49,8 @@ public class BalancedPersistentDynamicTree<E> extends PersistentDynamicTree {
 //        }
     }
 
-    protected void rightRotate(RBTNode x, RBTNode parent) {
-        RBTNode y = (RBTNode) x.leftChild;
+    protected void rightRotate(BinaryTreeNode x, RBTNode parent) {
+        BinaryTreeNode y = x.leftChild;
 
         x.leftChild = y.rightChild;
         y.rightChild = x;
@@ -66,8 +66,8 @@ public class BalancedPersistentDynamicTree<E> extends PersistentDynamicTree {
         }
     }
 
-    protected void leftRotate(RBTNode x, RBTNode parent) {
-        RBTNode y = (RBTNode) x.rightChild;
+    protected void leftRotate(BinaryTreeNode x, RBTNode parent) {
+        BinaryTreeNode y = x.rightChild;
 
         x.rightChild = y.leftChild;
         y.leftChild = x;
