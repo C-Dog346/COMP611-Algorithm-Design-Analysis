@@ -12,7 +12,7 @@ package ada_assignment_3;
  * fromElement (inclusive) and toElement (exclusive)
  *
  * This code was supplied by @author Andrew Ensor via the Canvas Discussions
- * fourm
+ * forum
  */
 import java.awt.Graphics;
 import java.util.AbstractSet;
@@ -38,6 +38,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
     protected BinaryTreeNode rootNode;
     private Comparator<? super E> comparator; // null for natural ordering
     private E fromElement, toElement; // bounds for visible view of tree
+    public static int ID;
 
     public BinarySearchTree() {
         super();
@@ -111,11 +112,11 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
             throw new IllegalArgumentException("Outside view");
         }
         BinaryTreeNode newNode = new BinaryTreeNode(o);
+        ID--;
         boolean added = false;
         if (rootNode == null) {
+            ID++;
             rootNode = newNode;
-//            nodeVisited(rootNode); //hook
-            allNodesVisited(); //hook
             added = true;
         }
         else {  // find where to add newNode
@@ -127,8 +128,8 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
                 if (comparison < 0) // newNode is less than currentNode
                 {
                     if (currentNode.leftChild == null) {  // add newNode as leftChild
-                        allNodesVisited(); //hook
                         currentNode.leftChild = newNode;
+                        nodeVisited(newNode);
                         done = true;
                         added = true;
                     }
@@ -139,8 +140,8 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
                 else if (comparison > 0)//newNode is greater than currentNode
                 {
                     if (currentNode.rightChild == null) {  // add newNode as rightChild
-                        allNodesVisited(); //hook
                         currentNode.rightChild = newNode;
+                        nodeVisited(newNode);
                         done = true;
                         added = true;
                     }
@@ -158,12 +159,13 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
             numElements++;
         }
 
+        allNodesVisited();
         return added;
     }
 
     // performs a comparison of the two elements, using the comparator
     // if not null, otherwise using the compareTo method
-    private int compare(E element1, E element2) {
+    protected int compare(E element1, E element2) {
         if (comparator != null) {
             return comparator.compare(element1, element2);
         }
@@ -446,27 +448,28 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
 
         public BinaryTreeNode leftChild, rightChild;
         public E element;
+        public int nodeCode;
 
         public BinaryTreeNode(E element) {
             this.element = element;
             leftChild = null;
             rightChild = null;
+            nodeCode = ID++;
         }
 
         // returns a string representation of the node and
         // its children using inorder (left-this-right) traversal
         public String toString() {
-            String output = "[";
+        String output = "[";
             if (leftChild != null) {
                 output += "" + leftChild;
             }
-            output += "" + element;
+            output += element + "<#" + this.nodeCode + ">";
             if (rightChild != null) {
                 output += "" + rightChild;
             }
             output += "]";
-            return output;
-        }
+            return output;}
 
         //GUI draw method
         public void draw(Graphics g, int x, int y, int level) {

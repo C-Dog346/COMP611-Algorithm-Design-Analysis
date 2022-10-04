@@ -11,11 +11,13 @@ public class PersistentDynamicTree extends BinarySearchTree {
 
     private ArrayList<BinaryTreeNode> dupeList;
     protected ArrayList<BinaryTreeNode> versionList;
+    public int versionNum;
 
     //constructor for empty tree
     public PersistentDynamicTree() {
         dupeList = new ArrayList();
         versionList = new ArrayList();
+        versionNum = 0;
     }
 
     //constructor for existing tree
@@ -25,17 +27,15 @@ public class PersistentDynamicTree extends BinarySearchTree {
 
         if (tree.rootNode != null) {
             this.rootNode = tree.rootNode;
-            versionList.add(rootNode);
-        }
-        else {
+            versionList.add(copyTree(rootNode));
+            versionNum = 1;
+        } else {
             System.out.println("Tree does not Exist");
         }
     }
 
     @Override
     public void nodeVisited(BinaryTreeNode node) {
-//        BinaryTreeNode newNode = copyNode(node);
-
         BinaryTreeNode newNode = new BinaryTreeNode(node.element);
         newNode.leftChild = node.leftChild;
         newNode.rightChild = node.rightChild;
@@ -66,25 +66,59 @@ public class PersistentDynamicTree extends BinarySearchTree {
             versionList.add(versionList.size() - 1, dupeList.get(0));
 
         }
-        else {
-            versionList.add(versionList.size() - 1, dupeList.get(0));
-        }
+            if ((dupeList.get(dupeList.size() - 2).leftChild == null
+                    || dupeList.get(dupeList.size() - 2).rightChild == null) && (dupeList.get(dupeList.size() - 2) != rootNode)) {
 
+                if (compare(dupeList.get(dupeList.size() - 2).element, dupeList.get(dupeList.size() - 1).element) < 0) {
+                    dupeList.get(dupeList.size() - 2).rightChild = dupeList.get(dupeList.size() - 1);
+                } else {
+                    dupeList.get(dupeList.size() - 2).leftChild = dupeList.get(dupeList.size() - 1);
+                }
+            }
+            versionList.add(dupeList.get(0));
+        
         dupeList.clear();
+        versionNum++;
     }
 
-    public BinaryTreeNode copyNode(BinaryTreeNode node) {
-        BinaryTreeNode nodeCopy = new BinaryTreeNode(node.element);
+    public BinaryTreeNode findChildPos(BinaryTreeNode oldRoot, BinaryTreeNode newParent, boolean left) {
+        BinaryTreeNode oldParent = oldRoot;
+
+        boolean found = false;
+        while (!found && oldParent != null) {
+            int comparison = compare(oldParent.element, newParent.element);
+
+            if (comparison == 0) {
+                found = true;
+
+            } else if (comparison < 0) {
+                oldParent = oldParent.rightChild;
+            } else { // comparison > 0
+                oldParent = oldParent.leftChild;
+            }
+        }
+
+        if (left) {
+            newParent.leftChild = oldParent.leftChild;
+        } else { //right 
+            newParent.rightChild = oldParent.rightChild;
+        }
+
+        return oldParent;
+    }
+
+    public BinaryTreeNode copyTree(BinaryTreeNode node) {
+        BinaryTreeNode treeCopy = new BinaryTreeNode(node.element);
 
         if (node.leftChild != null) {
-            nodeCopy.leftChild = copyNode(node.leftChild);
+            treeCopy.leftChild = copyTree(node.leftChild);
         }
 
         if (node.rightChild != null) {
-            nodeCopy.rightChild = copyNode(node.rightChild);
+            treeCopy.rightChild = copyTree(node.rightChild);
         }
 
-        return nodeCopy;
+        return treeCopy;
     }
 
     public BinarySearchTree createTree(int index) {
