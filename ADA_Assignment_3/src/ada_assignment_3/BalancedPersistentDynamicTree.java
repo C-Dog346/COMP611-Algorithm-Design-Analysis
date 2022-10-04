@@ -12,8 +12,9 @@ import java.awt.Color;
  * @author Callum
  *
  * a balanced persistent dynamic set as a red black tree
+ * @param <E>
  */
-public class RedBlackTree<E> extends PersistentDynamicTree {
+public class BalancedPersistentDynamicTree<E> extends PersistentDynamicTree {
 
     //Color for a red node.
     protected static final Color RED = Color.red;

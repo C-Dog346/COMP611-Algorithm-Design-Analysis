@@ -42,6 +42,7 @@ public class BinarySearchTree<E> extends AbstractSet<E> implements SortedSet<E> 
 
     public BinarySearchTree() {
         super();
+        ID = 0;
         numElements = 0;
         rootNode = null;
         comparator = null;

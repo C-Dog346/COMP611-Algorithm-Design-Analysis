@@ -28,8 +28,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
             this.rootNode = tree.rootNode;
             versionList.add(copyTree(rootNode));
             versionNum = 1;
-        }
-        else {
+        } else {
             System.out.println("Tree does not Exist");
         }
     }
@@ -39,8 +38,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
         if (node != null) {
             BinaryTreeNode newNode = new BinaryTreeNode(node.element);
             dupeList.add(newNode);
-        }
-        else {
+        } else {
             dupeList.add(null);
         }
     }
@@ -56,8 +54,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
                 //add new version
                 versionList.add(original.rootNode);
 
-            }
-            else {
+            } else {
                 for (int i = 0; i < dupeList.size() - 1; i++) {
                     assignChildren(i);
                 }
@@ -69,8 +66,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
 
                     if (compare(dupeList.get(dupeList.size() - 2).element, dupeList.get(dupeList.size() - 1).element) < 0) {
                         dupeList.get(dupeList.size() - 2).rightChild = dupeList.get(dupeList.size() - 1);
-                    }
-                    else {
+                    } else {
                         dupeList.get(dupeList.size() - 2).leftChild = dupeList.get(dupeList.size() - 1);
                     }
                 }
@@ -79,8 +75,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
                 versionList.add(dupeList.get(0));
             }
 
-        }
-        else { //node was removed
+        } else { //node was removed
             //leaf node removed
             if (dupeList.get(dupeList.size() - 1) == null) {
 
@@ -91,14 +86,12 @@ public class PersistentDynamicTree extends BinarySearchTree {
                 //remove leaf
                 if (compare(dupeList.get(dupeList.size() - 3).element, dupeList.get(dupeList.size() - 2).element) < 0) {
                     dupeList.get(dupeList.size() - 3).rightChild = null;
-                }
-                else {
+                } else {
                     dupeList.get(dupeList.size() - 3).leftChild = null;
                 }
 
                 //internal node removed
-            }
-            else if (dupeList.size() > 2) {
+            } else if (dupeList.size() > 2) {
 
                 for (int i = 0; i < dupeList.size() - 2; i++) {
                     assignChildren(i);
@@ -107,8 +100,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
                 //replace node
                 if (compare(dupeList.get(dupeList.size() - 3).element, dupeList.get(dupeList.size() - 2).element) < 0) {
                     dupeList.get(dupeList.size() - 3).rightChild = dupeList.get(dupeList.size() - 1);
-                }
-                else {
+                } else {
                     dupeList.get(dupeList.size() - 3).leftChild = dupeList.get(dupeList.size() - 1);
                 }
 
@@ -118,8 +110,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
                     findChild(versionList.get(versionNum - 1), dupeList.get(dupeList.size() - 1), true);
                     dupeList.get(dupeList.size() - 1).rightChild
                             = findChild(versionList.get(versionNum - 1), dupeList.get(dupeList.size() - 2), false);
-                }
-                else {
+                } else {
                     //replace left
                     findChild(versionList.get(versionNum - 1), dupeList.get(dupeList.size() - 1), false);
                     dupeList.get(dupeList.size() - 1).leftChild
@@ -127,8 +118,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
                 }
 
                 //root node removed
-            }
-            else {
+            } else {
                 //replaced by right child
                 if (compare(
                         findChild(versionList.get(versionNum - 1), dupeList.get(0), false).element,
@@ -139,13 +129,12 @@ public class PersistentDynamicTree extends BinarySearchTree {
                             = findChild(versionList.get(versionNum - 1), dupeList.get(0), true);
 
                     //replaced by lower child
-                }
-                else {
+                } else {
                     //assign replacement's children
-                    dupeList.get(1).leftChild
-                            = findChild(versionList.get(versionNum - 1), dupeList.get(0), true);
-                    dupeList.get(1).rightChild
-                            = findChild(versionList.get(versionNum - 1), dupeList.get(0), false);
+                    dupeList.get(1).leftChild = 
+                            findChild(versionList.get(versionNum - 1), dupeList.get(0), true);
+                    dupeList.get(1).rightChild = 
+                            findChild(versionList.get(versionNum - 1), dupeList.get(0), false);
 
                     //remove replacement from original position
                     BinaryTreeNode current = dupeList.get(1).rightChild;
@@ -166,9 +155,8 @@ public class PersistentDynamicTree extends BinarySearchTree {
 
                     if (tempList.get(tempList.size() - 1).leftChild.rightChild == null) {
                         tempList.get(tempList.size() - 1).leftChild = null;
-                    }
-                    else {
-                        tempList.get(tempList.size() - 1).leftChild
+                    } else {
+                        tempList.get(tempList.size() - 1).leftChild 
                                 = tempList.get(tempList.size() - 1).leftChild.rightChild;
                     }
 
@@ -185,7 +173,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
             //add new version
             versionList.add(dupeList.get(0));
         }
-
+        
         //prepare for next change
         dupeList.clear();
         versionNum++;
@@ -215,11 +203,9 @@ public class PersistentDynamicTree extends BinarySearchTree {
             if (comparison == 0) {
                 found = true;
 
-            }
-            else if (comparison < 0) {
+            } else if (comparison < 0) {
                 oldParent = oldParent.rightChild;
-            }
-            else { // comparison > 0
+            } else { // comparison > 0
                 oldParent = oldParent.leftChild;
             }
         }
@@ -227,8 +213,7 @@ public class PersistentDynamicTree extends BinarySearchTree {
         if (left) {
             newParent.leftChild = oldParent.leftChild;
             return oldParent.leftChild;
-        }
-        else { //right 
+        } else { //right 
             newParent.rightChild = oldParent.rightChild;
             return oldParent.rightChild;
         }
