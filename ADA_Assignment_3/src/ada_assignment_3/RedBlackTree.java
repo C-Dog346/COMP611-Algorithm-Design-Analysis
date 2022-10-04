@@ -10,6 +10,8 @@ import java.awt.Color;
 /**
  *
  * @author Callum
+ *
+ * a balanced persistent dynamic set as a red black tree
  */
 public class RedBlackTree<E> extends PersistentDynamicTree {
 
@@ -44,15 +46,14 @@ public class RedBlackTree<E> extends PersistentDynamicTree {
 //        while (root.) {
 //
 //        }
-
     }
-    
+
     protected void rightRotate(RBTNode x, RBTNode parent) {
         RBTNode y = (RBTNode) x.leftChild;
-        
-        x.leftChild = y.rightChild;        
+
+        x.leftChild = y.rightChild;
         y.rightChild = x;
-        
+
         if (this.rootNode == x) {
             this.rootNode = y;
         }
@@ -63,13 +64,13 @@ public class RedBlackTree<E> extends PersistentDynamicTree {
             parent.rightChild = y;
         }
     }
-    
+
     protected void leftRotate(RBTNode x, RBTNode parent) {
         RBTNode y = (RBTNode) x.rightChild;
-        
-        x.rightChild = y.leftChild;        
+
+        x.rightChild = y.leftChild;
         y.leftChild = x;
-        
+
         if (this.rootNode == x) {
             this.rootNode = y;
         }
@@ -79,5 +80,15 @@ public class RedBlackTree<E> extends PersistentDynamicTree {
         else {
             parent.leftChild = y;
         }
+    }
+    
+    @Override
+    public void nodeVisited(BinaryTreeNode ndoe) {
+        System.out.println("RedBlackTree nodeVisited");
+    }
+    
+    @Override
+    public void allNodesVisited() {
+        System.out.println("RedBlackTree allNodesVisited");
     }
 }

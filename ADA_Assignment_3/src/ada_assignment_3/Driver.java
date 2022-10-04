@@ -96,16 +96,14 @@ public class Driver {
 //
 //        TreeGUI existingChanged = new TreeGUI(testPDTree.createTree(testPDTree.versionList.size() - 1));
 //        existingChanged.StartGUI(testPDTree.versionList.size());
-
-
         RedBlackTree rbt = new RedBlackTree();
         rbt.add(5);
         rbt.add(10);
         rbt.add(15);
         rbt.add(20);
         rbt.add(1);
-        
+
         System.out.println(rbt);
-        
+
     }
 }

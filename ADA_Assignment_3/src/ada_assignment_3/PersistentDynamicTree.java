@@ -6,6 +6,7 @@ package ada_assignment_3;
 
 import java.util.ArrayList;
 
+// A persistent dymanic set as a tree
 public class PersistentDynamicTree extends BinarySearchTree {
 
     private ArrayList<BinaryTreeNode> dupeList;
@@ -25,7 +26,8 @@ public class PersistentDynamicTree extends BinarySearchTree {
         if (tree.rootNode != null) {
             this.rootNode = tree.rootNode;
             versionList.add(rootNode);
-        } else {
+        }
+        else {
             System.out.println("Tree does not Exist");
         }
     }
@@ -47,7 +49,8 @@ public class PersistentDynamicTree extends BinarySearchTree {
         if (dupeList.isEmpty()) {
             versionList.add(rootNode);
 
-        } else if (this.size() != 1) {
+        }
+        else if (this.size() != 1) {
             for (int i = 0; i < dupeList.size() - 1; i++) {
 
                 if (dupeList.get(i).leftChild != null
@@ -62,7 +65,8 @@ public class PersistentDynamicTree extends BinarySearchTree {
             }
             versionList.add(versionList.size() - 1, dupeList.get(0));
 
-        } else {
+        }
+        else {
             versionList.add(versionList.size() - 1, dupeList.get(0));
         }
 
