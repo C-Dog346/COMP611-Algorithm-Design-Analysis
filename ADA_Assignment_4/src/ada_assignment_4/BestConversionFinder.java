@@ -15,7 +15,30 @@ public class BestConversionFinder {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        AdjacencyListGraph<Integer> testGraph = new AdjacencyListGraph();
+        Vertex AUD = testGraph.addVertex(1);
+        Vertex EUR = testGraph.addVertex(2);
+        Vertex MXN = testGraph.addVertex(3);
+        Vertex NZD = testGraph.addVertex(4);
+        Vertex USD = testGraph.addVertex(5);
+        
+        testGraph.addEdge(AUD, USD);
+        testGraph.addEdge(AUD, NZD);
+        testGraph.addEdge(AUD, EUR);
+        testGraph.addEdge(USD, AUD);
+        testGraph.addEdge(USD, NZD);
+        testGraph.addEdge(USD, EUR);
+        testGraph.addEdge(USD, MXN);
+        testGraph.addEdge(MXN, USD);
+        testGraph.addEdge(EUR, AUD);
+        testGraph.addEdge(EUR, NZD);
+        testGraph.addEdge(EUR, USD);
+        testGraph.addEdge(NZD, USD);
+        testGraph.addEdge(NZD, EUR);
+        testGraph.addEdge(NZD, AUD);
+        
+        System.out.println(testGraph.toString());
+        
     }
-    
+
 }
