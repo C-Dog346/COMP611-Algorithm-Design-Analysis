@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class AdjacencyListGraph<E> implements GraphADT<E> {
 
-    private GraphType type;
+    protected GraphType type;
     protected Set<Vertex<E>> vertices;
     protected Set<Edge<E>> edges;
     // map holding adjacency list (as a set) for each vertex,
