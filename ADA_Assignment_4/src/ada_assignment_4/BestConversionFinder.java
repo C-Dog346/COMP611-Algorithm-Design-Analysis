@@ -24,18 +24,10 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
 
     private double[][] table;
     private double[][] weights;
-    private HashMap<Integer, String> currencies;
-    ArrayList<AdjacencyListEdge> currency1;
-    ArrayList<AdjacencyListEdge> currency2;
-    private HashMap<Integer, AdjacencyListVertex> currencyVertexes;
 
     public BestConversionFinder(double[][] table, HashMap<Integer, String> currencies) {
         super(GraphType.DIRECTED);
         this.table = table;
-        this.currencies = currencies;
-        currency1 = new ArrayList<>();
-        currency2 = new ArrayList<>();
-        currencyVertexes = new HashMap<>();
         convertToWeights();
     }
 
@@ -53,8 +45,6 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
             }
         }
     }
-    
-    
 
     public static void main(String[] args) {
         HashMap<Integer, String> currencies = new HashMap<>();
@@ -72,6 +62,6 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
             {0.92, 0.56, 0, 1, 0.67}, // NZD
             {1.39, 0.85, 21.19, 1.5, 1} // USD 
         }, currencies);
-        test
+
     }
 }
