@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author Callum extends a custom AdjacencyListGraph
  * @param <E>
  */
-public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
+public class ArbitrageFinder<E> extends AdjacencyListGraph<String> {
 
     private static final int AUD = 0; // Australian Dollar  
     private static final int EUR = 1; // Euro
@@ -27,7 +27,7 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
     private double[][] table;
     private double[][] weights;
 
-    public BestConversionFinder(double[][] table, HashMap<Integer, String> currencies) {
+    public ArbitrageFinder(double[][] table, HashMap<Integer, String> currencies) {
         super(GraphType.DIRECTED);
         this.table = table;
         convertToWeights();
@@ -104,35 +104,12 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
             Vertex<String> dst = e.endVertices()[1];
             if (distances.get(src) != INFINITE && distances.get(src)
                     + e.getWeight() < distances.get(dst)) {
-                System.out.println("Graph contains negative weight cycle!");
-                return false;
+                System.out.println("There is arbitrage within this graph");
+                return true;
             }
         }
-
-        System.out.println(print(leastEdge, source, end));
-
-        return true;
-    }
-
-    public String print(HashMap<Vertex<String>, Edge<String>> leastEdge,
-            Vertex<String> source,
-            Vertex<String> end) {
-        System.out.println("Distance from source");
-
-        Vertex<String> current = end;
-
-        String output = end + " - ";
-        while (!current.equals(source)) {
-            if (leastEdge.get(current) == null) {
-                return "NO PATH FOUND";
-            }
-            output += leastEdge.get(current);
-                    
-            current = leastEdge.get(current).oppositeVertex(current);
-        }
-        
-        return output + " - " + source;
-
+        System.out.println("There is no arbitrage within this graph");
+        return false;
     }
 
     public static void main(String[] args) {
@@ -143,7 +120,7 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
         currencies.put(3, "NZD");
         currencies.put(4, "USD");
 
-//        BestConversionFinder<String> testFail = new BestConversionFinder(new double[][]{
+//        ArbitrageFinder<String> testFail = new ArbitrageFinder(new double[][]{
 //            //AUD EUR  MXN NZD   USD
 //            {1, 0.61, 0, 1.08, 0.72}, // AUD
 //            {1.64, 1, 0, 1.77, 1.18}, // EUR
@@ -159,12 +136,11 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
 //        }
 //
 //        testFail.bellmanFord(failList.get(0), failList.get(3));
-
-        BestConversionFinder<String> testPass = new BestConversionFinder(new double[][]{
-            {1, 0, 0.2, 0.22},
-            {0.56, 1, 1.1, 1.5},
-            {0, 0.3, 1, 1.2},
-            {1.3, 0, 0, 1}},
+        ArbitrageFinder<String> testPass = new ArbitrageFinder(new double[][]{
+            {1, 0, 0.4, 0.4},
+            {0, 1, 1.6, 1.5},
+            {0, 0, 1, 1.1},
+            {1.3, 0, 0.4, 1}},
                 currencies);
 
         ArrayList<Vertex<String>> passList = new ArrayList<>();
@@ -172,7 +148,7 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
         for (Vertex<String> v : testPass.vertices) {
             passList.add(v);
         }
-        
+
         testPass.bellmanFord(passList.get(2), passList.get(3));
 
     }
