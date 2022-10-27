@@ -131,6 +131,25 @@ public class AdjacencyListGraph<E> implements GraphADT<E> {
         }
         return edge;
     }
+    
+    public Edge<E> addEdge(Vertex<E> vertex0, Vertex<E> vertex1, double weight) {  // first add the end vertices if not already in graph
+        if (!containsVertex(vertex0)) {
+            addVertex(vertex0);
+        }
+        if (!containsVertex(vertex1)) {
+            addVertex(vertex1);
+        }
+        // create the new edge
+        Edge<E> edge = new AdjacencyListEdge(vertex0, vertex1, weight);
+        edges.add(edge);
+        // update the adjacency list for one or both end vertices
+        adjacencyLists.get(vertex0).add(edge);
+        if (type == GraphType.UNDIRECTED) // add the reverse edge 
+        {
+            adjacencyLists.get(vertex1).add(edge);
+        }
+        return edge;
+    }
 
     // removes the specified vertex from the graph
     @Override
@@ -264,10 +283,17 @@ public class AdjacencyListGraph<E> implements GraphADT<E> {
         // for a directed graph edge is from vertex1 to vertex2
 
         private Vertex<E> vertex1, vertex2;
-
+        protected double weight;
+        
         public AdjacencyListEdge(Vertex<E> vertex1, Vertex<E> vertex2) {
             this.vertex1 = vertex1;
             this.vertex2 = vertex2;
+        }
+
+        public AdjacencyListEdge(Vertex<E> vertex1, Vertex<E> vertex2, double weight) {
+            this.vertex1 = vertex1;
+            this.vertex2 = vertex2;
+            this.weight = weight;
         }
 
         // returns the two end vertices for this edge as an array
@@ -292,7 +318,7 @@ public class AdjacencyListGraph<E> implements GraphADT<E> {
 
         @Override
         public String toString() {
-            return "(" + vertex1 + "-" + vertex2 + ")";
+            return "(" + vertex1 + "-" + weight + "-" + vertex2 + ")";
         }
     }
 }
