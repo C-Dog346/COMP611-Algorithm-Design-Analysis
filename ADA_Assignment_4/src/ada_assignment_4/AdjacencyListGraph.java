@@ -283,7 +283,7 @@ public class AdjacencyListGraph<E> implements GraphADT<E> {
         // for a directed graph edge is from vertex1 to vertex2
 
         private Vertex<E> vertex1, vertex2;
-        protected double weight;
+        private double weight;
         
         public AdjacencyListEdge(Vertex<E> vertex1, Vertex<E> vertex2) {
             this.vertex1 = vertex1;
@@ -318,7 +318,15 @@ public class AdjacencyListGraph<E> implements GraphADT<E> {
 
         @Override
         public String toString() {
-            return "(" + vertex1 + "-" + weight + "-" + vertex2 + ")";
+            return "(" + vertex1 + "-" + getWeight() + "-" + vertex2 + ")";
+        }
+
+        /**
+         * @return the weight
+         */
+        @Override
+        public double getWeight() {
+            return weight;
         }
     }
 }

@@ -8,7 +8,6 @@ package ada_assignment_4;
 import ada_assignment_4.GraphADT.GraphType;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  *
@@ -22,6 +21,8 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
     private static final int MXN = 2; // Mexican Peso
     private static final int NZD = 3; // New Zealand Dollar
     private static final int USD = 4; // United States Dollar
+
+    private final double INFINITE = Double.MAX_VALUE;
 
     private double[][] table;
     private double[][] weights;
@@ -75,47 +76,47 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
         return true;
     }
 
-    public void bellmanFord(Vertex<String> source) {
+    public boolean bellmanFord(Vertex<String> source) {
 
         HashMap<Vertex<String>, Double> distances = new HashMap<>();
-        HashMap<Vertex<String>, Edge<E>> leastEdge = new HashMap<>();
-        
-        for (Vertex<String> v : super.vertices) {
-            distances.put(v, Double.MAX_VALUE);
-        }
+        HashMap<Vertex<String>, Edge<String>> leastEdge = new HashMap<>();
 
-        HashSet set = (HashSet) super.edges;
-        
-        // Step 2: Relax all edges |V| - 1 times. A simple
-        // shortest path from src to any other vertex can
-        // have at-most |V| - 1 edges
-        for (int i = 1; i < super.vertices.size(); ++i) {
-            for (int j = 0; j < E; ++j) {
-                int u = set.g;
-                int v = graph.edge[j].dest;
-                int weight = graph.edge[j].weight;
-                if (distances.get(v) != Double.MAX_VALUE
-                        && dist[u] + weight < dist[v]) {
-                    dist[v] = dist[u] + weight;
+        for (Vertex<String> v : super.vertices) {
+            distances.put(v, INFINITE);
+        }
+        distances.put(source, 0.0);
+
+        for (Vertex<String> v : super.vertices) {
+            for (Edge<String> e : super.edges) {
+                Vertex<String> src = e.endVertices()[0];
+                Vertex<String> dst = e.endVertices()[1];
+                if (distances.get(src) != INFINITE && distances.get(src)
+                        + e.getWeight() < distances.get(dst)) {
+                    distances.replace(dst, distances.get(src) + e.getWeight());
+                    leastEdge.put(src, e);
                 }
             }
         }
 
-        // Step 3: check for negative-weight cycles. The
-        // above step guarantees shortest distances if graph
-        // doesn't contain negative weight cycle. If we get
-        // a shorter path, then there is a cycle.
-        for (int j = 0; j < E; ++j) {
-            int u = graph.edge[j].src;
-            int v = graph.edge[j].dest;
-            int weight = graph.edge[j].weight;
-            if (dist[u] != Integer.MAX_VALUE
-                    && dist[u] + weight < dist[v]) {
-                System.out.println(
-                        "Graph contains negative weight cycle");
-                return;
+        for (Edge<String> e : super.edges) {
+            Vertex<String> src = e.endVertices()[0];
+            Vertex<String> dst = e.endVertices()[1];
+            if (distances.get(src) != INFINITE && distances.get(src)
+                    + e.getWeight() < distances.get(dst)) {
+                System.out.println("Graph contains negative weight cycle!");
+                return false;
             }
         }
+
+        printArray(leastEdge);
+
+        return true;
+    }
+
+    public void printArray(HashMap<Vertex<String>, Edge<String>> leastEdge) {
+        System.out.println("Distance from source");
+
+        leastEdge.toString();
     }
 
     public static void main(String[] args) {
@@ -135,6 +136,7 @@ public class BestConversionFinder<E> extends AdjacencyListGraph<String> {
             {1.39, 0.85, 21.19, 1.5, 1} // USD 
         }, currencies);
 
-        //System.out.println(test);
+        Vertex aus = test.addVertex("AUD");
+        Vertex europe = test.addVertex("EUR");
     }
 }

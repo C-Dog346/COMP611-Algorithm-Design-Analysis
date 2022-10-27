@@ -13,4 +13,6 @@ public interface Edge<E> {
     // returns the end vertex opposite the specified vertex
 
     public Vertex<E> oppositeVertex(Vertex<E> vertex);
+    
+    public double getWeight();
 }
